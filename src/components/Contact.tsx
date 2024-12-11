@@ -50,7 +50,7 @@ const Contact = () => {
             </div>
           </Card>
 
-          <Card className="p-6">
+          {/* <Card className="p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Input
@@ -85,7 +85,7 @@ const Contact = () => {
                 Send Message
               </Button>
             </form>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </section>
