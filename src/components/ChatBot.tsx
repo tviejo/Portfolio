@@ -46,6 +46,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         }),
       });
 
+      if (!response.ok) {
+        const errorDetails = await response.json();
+        console.error('Error:', errorDetails);
+        throw new Error(errorDetails.error || 'Failed to fetch response from API');
+      }
+
       const data = await response.json();
       const assistantMessage = data.choices[0].message;
 
@@ -54,7 +60,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       console.error('Error:', error);
       setMessages((prev) => [...prev, {
         role: 'assistant',
-        content: 'An error occurred while connecting to the AI service. Please try again later.',
+        content: `An error occurred: ${error.message}. Please try again later.`,
       }]);
     }
   };
