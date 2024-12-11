@@ -46,36 +46,21 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         }),
       });
 
-      const responseText = await response.text();
-
       if (!response.ok) {
-        console.error('Error:', responseText);
-        throw new Error('Failed to fetch response from API');
+        const responseText = await response.text();
+        console.error('API Error:', responseText);
+        throw new Error(`Failed to fetch response from API: ${response.status} ${response.statusText}`);
       }
 
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch (parseError) {
-        console.error('Parse Error:', parseError);
-        throw new Error('Invalid JSON response from API');
-      }
-
+      const data = await response.json();
       const assistantMessage = data.choices[0].message;
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Error:', error);
-      if (error instanceof Error) {
-        setMessages((prev) => [...prev, {
-          role: 'assistant',
-          content: `An error occurred: ${error.message}. Please try again later.`,
-        }]);
-      } else {
-        setMessages((prev) => [...prev, {
-          role: 'assistant',
-          content: 'An unknown error occurred. Please try again later.',
-        }]);
-      }
+      console.error('Request Error:', error);
+      setMessages((prev) => [...prev, {
+        role: 'assistant',
+        content: `An unexpected error occurred: ${(error as Error).message}. Please try again later.`,
+      }]);
     }
   };
 
