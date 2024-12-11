@@ -60,7 +60,9 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         ...prev,
         {
           role: 'assistant',
-          content: `An unexpected error occurred: ${error.message}. Please try again later.`,
+          content: `An unexpected error occurred: ${
+            error instanceof Error ? error.message : 'Unknown error'
+          }. Please try again later.`,
         },
       ]);
     }
