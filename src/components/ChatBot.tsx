@@ -22,7 +22,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Hello! I am an AI assistant. How can I help you today with Thomas Viejo\'s CV?',
+      content: prompt,
     },
   ]);
   const [input, setInput] = useState('');
@@ -37,19 +37,22 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
 
     try {
       const response = await axios.post('/api/chat', {
-        messages: `${[...messages, userMessage].join('\n')}\n${cvData}\n${prompt}`,
+        messages: [
+          { role: 'system', content: `${prompt}\n${cvData}` },
+          ...messages,
+          userMessage,
+        ],
       });
 
       const assistantMessage = response.data.choices[0].message;
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Request Error:', error);
-      const errorMessage = (error as any).message || 'An unexpected error occurred. Please try again later.';
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          content: `An unexpected error occurred: ${errorMessage}. Please try again later.`,
+          content: `An unexpected error occurred: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again later.`,
         },
       ]);
     }
