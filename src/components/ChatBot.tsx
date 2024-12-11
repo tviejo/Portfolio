@@ -45,11 +45,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Request Error:', error);
+      const errorMessage = (error as any).message || 'An unexpected error occurred. Please try again later.';
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          content: `An unexpected error occurred: ${error.message}. Please try again later.`,
+          content: `An unexpected error occurred: ${errorMessage}. Please try again later.`,
         },
       ]);
     }
