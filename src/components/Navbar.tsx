@@ -6,11 +6,13 @@ import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, toggleTheme, setTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    setTheme('dark');
-  }, [setTheme]);
+    if (theme !== 'dark') {
+      toggleTheme();
+    }
+  }, [theme, toggleTheme]);
 
   const menuItems = [
     { label: 'About', href: '#about' },
