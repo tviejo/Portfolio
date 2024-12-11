@@ -22,19 +22,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: prompt,
+      content: 'Hello! How can I help you today regarding Thomas Viejo? 🤖',
     },
   ]);
   const [input, setInput] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMessage = { role: 'user' as const, content: input };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput('');
-
+  const fetchAssistantMessage = async (userMessage: Message) => {
     try {
       const response = await axios.post('/api/chat', {
         messages: [
@@ -43,16 +36,31 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
           userMessage,
         ],
       });
+      return response.data.choices[0].message;
+    } catch (error) {
+      throw new Error(
+        error instanceof Error ? error.message : 'Unknown error'
+      );
+    }
+  };
 
-      const assistantMessage = response.data.choices[0].message;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    const userMessage: Message = { role: 'user', content: input };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput('');
+
+    try {
+      const assistantMessage = await fetchAssistantMessage(userMessage);
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Request Error:', error);
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          content: `An unexpected error occurred: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again later.`,
+          content: `An unexpected error occurred: ${error.message}. Please try again later.`,
         },
       ]);
     }
@@ -67,7 +75,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 p-4">
+      <ScrollArea className="flex-1 p-4" aria-live="polite">
         <div className="space-y-4">
           {messages.map((message, index) => (
             <div
