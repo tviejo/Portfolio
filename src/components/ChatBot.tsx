@@ -6,7 +6,7 @@ import { Card } from './ui/card';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import cvData from '../data/cvData';
-import prompt from '../data/prompt';
+import prompt from '../components/Prompt';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -21,7 +21,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hi! I'm Thomas's AI assistant. I can help you learn more about his experience and skills. What would you like to know? ",
+      content: prompt,
     },
   ]);
   const [input, setInput] = useState('');
