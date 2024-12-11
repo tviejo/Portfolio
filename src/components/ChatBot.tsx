@@ -1,5 +1,5 @@
 // src/components/ChatBot.tsx
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import { X } from 'lucide-react';
 import { Button } from './ui/button';
@@ -8,6 +8,7 @@ import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import cvData from '../data/cvData';
 import prompt from '../data/prompt';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -26,6 +27,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     },
   ]);
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+  };
 
   const fetchAssistantMessage = async (userMessage: Message) => {
     try {
@@ -51,6 +58,8 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     const userMessage: Message = { role: 'user', content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
+    setLoading(true);
+    scrollToBottom();
 
     try {
       const assistantMessage = await fetchAssistantMessage(userMessage);
@@ -60,11 +69,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         ...prev,
         {
           role: 'assistant',
-          content: `An unexpected error occurred: ${
-            error instanceof Error ? error.message : 'Unknown error'
-          }. Please try again later.`,
+          content: `An unexpected error occurred: ${error.message}. Please try again later.`,
         },
       ]);
+    } finally {
+      setLoading(false);
+      scrollToBottom();
     }
   };
 
@@ -77,7 +87,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 p-4" aria-live="polite">
+      <ScrollArea className="flex-1 p-4" aria-live="polite" ref={scrollRef}>
         <div className="space-y-4">
           {messages.map((message, index) => (
             <div
@@ -93,12 +103,14 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
                     : 'bg-muted'
                 }`}
               >
-                {message.content}
+                <ReactMarkdown>{message.content}</ReactMarkdown>
               </div>
             </div>
           ))}
         </div>
       </ScrollArea>
+
+      {loading && <div className="p-4 text-center">Loading...</div>}
 
       <form onSubmit={handleSubmit} className="p-4 border-t">
         <div className="flex gap-2">
