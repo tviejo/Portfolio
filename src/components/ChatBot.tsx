@@ -60,7 +60,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       console.error('Error:', error);
       setMessages((prev) => [...prev, {
         role: 'assistant',
-        content: `An error occurred: ${error.message}. Please try again later.`,
+        content: `An error occurred: ${(error as Error).message}. Please try again later.`,
       }]);
     }
   };
