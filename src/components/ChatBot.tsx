@@ -65,10 +65,17 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error:', error);
-      setMessages((prev) => [...prev, {
-        role: 'assistant',
-        content: `An error occurred: ${error.message}. Please try again later.`,
-      }]);
+      if (error instanceof Error) {
+        setMessages((prev) => [...prev, {
+          role: 'assistant',
+          content: `An error occurred: ${error.message}. Please try again later.`,
+        }]);
+      } else {
+        setMessages((prev) => [...prev, {
+          role: 'assistant',
+          content: 'An unknown error occurred. Please try again later.',
+        }]);
+      }
     }
   };
 
