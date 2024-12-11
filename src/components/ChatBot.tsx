@@ -1,5 +1,5 @@
 // src/components/ChatBot.tsx
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { X } from 'lucide-react';
 import { Button } from './ui/button';
@@ -30,9 +30,9 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollToTop = () => {
-    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+  }, [messages]);
 
   const fetchAssistantMessage = async (userMessage: Message) => {
     try {
@@ -63,7 +63,6 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     try {
       const assistantMessage = await fetchAssistantMessage(userMessage);
       setMessages((prev) => [...prev, assistantMessage]);
-      scrollToTop();
     } catch (error) {
       setMessages((prev) => [
         ...prev,
@@ -78,7 +77,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   };
 
   return (
-    <Card className="w-[600px] h-[700px] flex flex-col">
+    <Card className="w-[800px] h-[500px] flex flex-col">
       <div className="p-4 border-b flex justify-between items-center">
         <h3 className="font-semibold">Chat with AI Assistant</h3>
         <Button variant="ghost" size="icon" onClick={onClose}>
