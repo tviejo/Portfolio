@@ -6,7 +6,7 @@ import { Card } from './ui/card';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import cvData from '../data/cvData';
-import prompt from '../components/Prompt';
+import prompt from '../data/prompt';
 
 interface Message {
   role: 'user' | 'assistant';
