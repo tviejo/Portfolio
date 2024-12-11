@@ -14,7 +14,7 @@ interface Message {
 interface ChatBotProps {
   onClose: () => void;
 }
- 
+
 const ChatBot = ({ onClose }: ChatBotProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -33,14 +33,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     setInput('');
 
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
           messages: [
             ...messages,
             userMessage
@@ -48,31 +46,16 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         }),
       });
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error('Unauthorized. Please check your API key.');
-        } else {
-          const errorData = await response.json();
-          throw new Error(errorData.error?.message || `Error: ${response.statusText}`);
-        }
-      }
-
       const data = await response.json();
-      const assistantMessage: Message = data.choices[0].message;
+      const assistantMessage = data.choices[0].message;
 
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error:', error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: error.message || 'An unexpected error occurred.',
-        },
-      ]);
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
+      setMessages((prev) => [...prev, {
+        role: 'assistant',
+        content: 'An error occurred while connecting to the AI service. Please try again later.',
+      }]);
     }
   };
 
