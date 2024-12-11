@@ -1,21 +1,19 @@
 import { useState } from 'react';
-import { Menu, X, Moon, Sun, Globe } from 'lucide-react';
+import {  Moon, Sun } from 'lucide-react';
 import { Button } from './ui/button';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const { language, toggleLanguage, t } = useLanguage();
 
   const menuItems = [
-    { label: t('nav.about'), href: '#about' },
-    { label: t('nav.experience'), href: '#experience' },
-    { label: t('nav.education'), href: '#education' },
-    { label: t('nav.projects'), href: '#projects' },
-    { label: t('nav.contact'), href: '#contact' },
+    { label: 'About', href: '#about' },
+    { label: 'Experience', href: '#experience' },
+    { label: 'Education', href: '#education' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Contact', href: '#contact' },
   ];
 
   return (

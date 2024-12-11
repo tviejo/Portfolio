@@ -1,10 +1,8 @@
 import { Github, Linkedin, Mail, MapPin, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { motion } from 'framer-motion';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 const Hero = () => {
-  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen relative">
@@ -31,10 +29,10 @@ const Hero = () => {
             className="text-center"
           >
             <h1 className="text-4xl sm:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-primary/60">
-              {t('hero.greeting')}
+              {'Hello, I\'m Thomas Viejo'}
             </h1>
             <p className="text-xl sm:text-2xl text-foreground/80 mb-8 max-w-2xl mx-auto">
-              {t('hero.title')}
+              {'Software Developer & Tech Enthusiast'}
             </p>
           </motion.div>
 
@@ -86,7 +84,7 @@ const Hero = () => {
             transition={{ delay: 0.6, duration: 0.6 }}
             className="flex items-center text-foreground/60 mt-4"
           >
-            <MapPin className="w-4 h-4 mr-2" /> {t('hero.location')}
+            <MapPin className="w-4 h-4 mr-2" /> {'Paris, France'}
           </motion.div>
 
           {/* Scroll Indicator */}
