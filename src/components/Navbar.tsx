@@ -9,10 +9,21 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    if (theme !== 'dark') {
-      toggleTheme();
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+      if (storedTheme !== theme) {
+        toggleTheme();
+      }
+    } else {
+      localStorage.setItem('theme', 'dark');
     }
   }, [theme, toggleTheme]);
+
+  const handleToggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('theme', newTheme);
+    toggleTheme();
+  };
 
   const menuItems = [
     { label: 'About', href: '#about' },
@@ -51,7 +62,7 @@ const Navbar = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={toggleTheme}
+              onClick={handleToggleTheme}
               className="hover:bg-primary/10 p-2 rounded-full"
             >
               {theme === 'light' ? (
@@ -66,7 +77,7 @@ const Navbar = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={toggleTheme}
+              onClick={handleToggleTheme}
               className="hover:bg-primary/10 p-2 rounded-full"
             >
               {theme === 'light' ? (
