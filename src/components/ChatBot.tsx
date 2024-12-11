@@ -1,10 +1,10 @@
-// frontend/src/components/ChatBot.tsx
+// src/components/ChatBot.tsx
 import { useState } from 'react';
 import { X } from 'lucide-react';
-import { Button } from '../ui/Button';
-import { Card } from '../ui/Card';
-import { Input } from '../ui/Input';
-import { ScrollArea } from '../ui/ScrollArea';
+import { Button } from './ui/button';
+import { Card } from './ui/card';
+import { Input } from './ui/input';
+import { ScrollArea } from './ui/scroll-area';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -14,7 +14,7 @@ interface Message {
 interface ChatBotProps {
   onClose: () => void;
 }
-
+ 
 const ChatBot = ({ onClose }: ChatBotProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -23,8 +23,6 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     },
   ]);
   const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +31,6 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     const userMessage = { role: 'user' as const, content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
-    setIsLoading(true);
-    setError(null);
 
     try {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -44,7 +40,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
           Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini', // Correct model name
+          model: 'gpt-4o-mini',
           messages: [
             ...messages,
             userMessage
@@ -101,28 +97,14 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
               <div
                 className={`max-w-[80%] rounded-lg p-3 ${
                   message.role === 'user'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted'
                 }`}
               >
                 {message.content}
               </div>
             </div>
           ))}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="max-w-[80%] rounded-lg p-3 bg-gray-200 animate-pulse">
-                Typing...
-              </div>
-            </div>
-          )}
-          {error && (
-            <div className="flex justify-start">
-              <div className="max-w-[80%] rounded-lg p-3 bg-red-200 text-red-800">
-                {error}
-              </div>
-            </div>
-          )}
         </div>
       </ScrollArea>
 
@@ -132,11 +114,8 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
-            disabled={isLoading}
           />
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Sending...' : 'Send'}
-          </Button>
+          <Button type="submit">Send</Button>
         </div>
       </form>
     </Card>
