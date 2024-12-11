@@ -1,4 +1,3 @@
-// src/components/ChatBot.tsx
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { X } from 'lucide-react';
@@ -14,7 +13,7 @@ import { ImSpinner2 } from 'react-icons/im';
 interface Message {
   role: 'user' | 'assistant';
   content: string;
-  id: string; // Added unique identifier for each message
+  id: string;
 }
 
 interface ChatBotProps {
@@ -32,13 +31,11 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const latestMessageRef = useRef<HTMLDivElement>(null); // Ref to the latest AI message
+  const latestMessageRef = useRef<HTMLDivElement>(null);
 
-  // Function to generate unique IDs for messages
   const generateId = () => `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
   useEffect(() => {
-    // Scroll to the latest message
     latestMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [messages]);
 
@@ -68,10 +65,9 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     setInput('');
     setLoading(true);
 
-    // Add a temporary loading message from the assistant
     const loadingMessage: Message = {
       role: 'assistant',
-      content: '', // Content will be replaced by the loading animation
+      content: '',
       id: generateId(),
     };
     setMessages((prev) => [...prev, loadingMessage]);
@@ -81,7 +77,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       const assistantMessage: Message = {
         role: 'assistant',
         content: assistantMessageData.content,
-        id: loadingMessage.id, // Replace the loading message with the actual message
+        id: loadingMessage.id,
       };
       setMessages((prev) =>
         prev.map((msg) => (msg.id === loadingMessage.id ? assistantMessage : msg))
@@ -101,19 +97,30 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   };
 
   return (
-    <Card className="w-[800px] h-[500px] flex flex-col">
+    <Card
+      className="
+        w-full max-w-[95%] sm:max-w-md md:max-w-3xl 
+        h-[90vh] md:h-[80vh] 
+        flex flex-col mx-auto shadow-lg rounded-md overflow-hidden
+      "
+    >
       <div className="p-4 border-b flex justify-between items-center">
         <h3 className="font-semibold">Chat with AI Assistant</h3>
-        <Button variant="ghost" size="icon" onClick={onClose}>
-          <X className="h-4 w-4" />
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClose}
+          className="hover:bg-primary/10 p-2 rounded-full"
+          aria-label="Close chat"
+        >
+          <X className="h-6 w-6 text-blue-500" />
         </Button>
       </div>
 
       <ScrollArea className="flex-1 p-4" aria-live="polite" ref={scrollRef}>
         <div className="space-y-4">
           {messages.map((message, index) => {
-            // Check if the message is the loading message
-            const isLoadingMessage = loading && message.role === 'assistant' && message.content === '';
+            const isLoadingMessage = loading && message.role === 'assistant' && !message.content;
 
             return (
               <div
@@ -123,13 +130,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
                 }`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
+                  className={`max-w-[75%] sm:max-w-[85%] rounded-lg p-3 ${
                     message.role === 'user'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-100 text-gray-900'
                   }`}
                   ref={
-                    // Attach the ref to the latest assistant message
                     index === messages.length - 1 && message.role === 'assistant'
                       ? latestMessageRef
                       : null
@@ -156,7 +162,8 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
-            disabled={loading} // Optionally disable input while loading
+            disabled={loading}
+            className="flex-1"
           />
           <Button type="submit" disabled={loading}>
             Send

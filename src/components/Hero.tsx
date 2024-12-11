@@ -3,7 +3,6 @@ import { Button } from './ui/button';
 import { motion } from 'framer-motion';
 
 const Hero = () => {
-
   return (
     <div className="min-h-screen relative">
       {/* Background Pattern */}
@@ -17,9 +16,13 @@ const Hero = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="w-32 h-32 rounded-full border-4 border-primary/20 p-1"
+            className="w-40 sm:w-48 md:w-56 h-40 sm:h-48 md:h-56 rounded-full overflow-hidden border-4 border-primary/20 p-1" // Responsive sizes
           >
-            <div className="w-full h-full rounded-full bg-gradient-to-br from-primary/80 to-primary/20" />
+            <img
+              src="/images/thomas.jpg"
+              alt="Thomas Viejo"
+              className="w-full h-full object-cover"
+            />
           </motion.div>
 
           <motion.div
@@ -28,7 +31,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-center"
           >
-            <h1 className="text-4xl sm:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-primary/60">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-primary/60">
               {'Hello, I\'m Thomas Viejo'}
             </h1>
             <p className="text-xl sm:text-2xl text-foreground/80 mb-8 max-w-2xl mx-auto">
