@@ -14,6 +14,7 @@ import { ImSpinner2 } from 'react-icons/im';
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  id: string; // Added unique identifier for each message
 }
 
 interface ChatBotProps {
@@ -23,6 +24,7 @@ interface ChatBotProps {
 const ChatBot = ({ onClose }: ChatBotProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
+      id: 'msg-0',
       role: 'assistant',
       content: 'Hello! How can I help you today regarding Thomas Viejo? 🤖',
     },
@@ -30,9 +32,14 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const latestMessageRef = useRef<HTMLDivElement>(null); // Ref to the latest AI message
+
+  // Function to generate unique IDs for messages
+  const generateId = () => `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+    // Scroll to the latest message
+    latestMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [messages]);
 
   const fetchAssistantMessage = async (userMessage: Message) => {
@@ -56,18 +63,34 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const userMessage: Message = { role: 'user', content: input };
+    const userMessage: Message = { role: 'user', content: input, id: generateId() };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setLoading(true);
 
+    // Add a temporary loading message from the assistant
+    const loadingMessage: Message = {
+      role: 'assistant',
+      content: '', // Content will be replaced by the loading animation
+      id: generateId(),
+    };
+    setMessages((prev) => [...prev, loadingMessage]);
+
     try {
-      const assistantMessage = await fetchAssistantMessage(userMessage);
-      setMessages((prev) => [...prev, assistantMessage]);
+      const assistantMessageData = await fetchAssistantMessage(userMessage);
+      const assistantMessage: Message = {
+        role: 'assistant',
+        content: assistantMessageData.content,
+        id: loadingMessage.id, // Replace the loading message with the actual message
+      };
+      setMessages((prev) =>
+        prev.map((msg) => (msg.id === loadingMessage.id ? assistantMessage : msg))
+      );
     } catch (error) {
       setMessages((prev) => [
         ...prev,
         {
+          id: generateId(),
           role: 'assistant',
           content: `An unexpected error occurred: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again later.`,
         },
@@ -88,33 +111,44 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
 
       <ScrollArea className="flex-1 p-4" aria-live="polite" ref={scrollRef}>
         <div className="space-y-4">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                message.role === 'user' ? 'justify-end' : 'justify-start'
-              }`}
-            >
+          {messages.map((message, index) => {
+            // Check if the message is the loading message
+            const isLoadingMessage = loading && message.role === 'assistant' && message.content === '';
+
+            return (
               <div
-                className={`max-w-[80%] rounded-lg p-3 ${
-                  message.role === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted'
+                key={message.id}
+                className={`flex ${
+                  message.role === 'user' ? 'justify-end' : 'justify-start'
                 }`}
               >
-                <ReactMarkdown>{message.content}</ReactMarkdown>
+                <div
+                  className={`max-w-[80%] rounded-lg p-3 ${
+                    message.role === 'user'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted'
+                  }`}
+                  ref={
+                    // Attach the ref to the latest assistant message
+                    index === messages.length - 1 && message.role === 'assistant'
+                      ? latestMessageRef
+                      : null
+                  }
+                >
+                  {isLoadingMessage ? (
+                    <div className="flex items-center gap-2">
+                      <ImSpinner2 className="animate-spin text-lg text-gray-600" />
+                      <span className="text-gray-600">Typing...</span>
+                    </div>
+                  ) : (
+                    <ReactMarkdown>{message.content}</ReactMarkdown>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </ScrollArea>
-
-      {loading && (
-        <div className="p-4 text-center flex items-center justify-center gap-2">
-          <ImSpinner2 className="animate-spin text-3xl text-gray-600" />
-          <span className="text-gray-600">Starting...</span>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="p-4 border-t">
         <div className="flex gap-2">
@@ -122,8 +156,11 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
+            disabled={loading} // Optionally disable input while loading
           />
-          <Button type="submit">Send</Button>
+          <Button type="submit" disabled={loading}>
+            Send
+          </Button>
         </div>
       </form>
     </Card>
