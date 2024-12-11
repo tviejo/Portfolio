@@ -19,7 +19,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hi! I'm Thomas's AI assistant. I can help you learn more about his experience and skills. What would you like to know?",
+      content: "Hi! I'm Thomas's AI assistant. I can help you learn more about his experience and skills. What would you like to know? ",
     },
   ]);
   const [input, setInput] = useState('');
