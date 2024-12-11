@@ -22,7 +22,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: prompt,
+      content: 'Hello! I am an AI assistant. How can I help you today with Thomas Viejo\'s CV?',
     },
   ]);
   const [input, setInput] = useState('');
@@ -37,8 +37,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
 
     try {
       const response = await axios.post('/api/chat', {
-        messages: [...messages, userMessage],
-        context: `${prompt}\n${cvData}`,
+        messages: `${[...messages, userMessage].join('\n')}\n${cvData}\n${prompt}`,
       });
 
       const assistantMessage = response.data.choices[0].message;
