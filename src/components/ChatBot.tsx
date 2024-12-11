@@ -21,7 +21,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: prompt,
+      content: prompt + cvData,
     },
   ]);
   const [input, setInput] = useState('');
@@ -42,8 +42,6 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         },
         body: JSON.stringify({
           messages: [...messages, userMessage],
-          cvData,
-          prompt,
         }),
       });
 
