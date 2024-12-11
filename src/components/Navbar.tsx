@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import {  Moon, Sun } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Moon, Sun } from 'lucide-react';
 import { Button } from './ui/button';
 import { useTheme } from '@/contexts/ThemeContext';
 import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setTheme('dark');
+  }, [setTheme]);
 
   const menuItems = [
     { label: 'About', href: '#about' },
@@ -42,20 +46,39 @@ const Navbar = () => {
               </a>
             ))}
 
-            <div className="flex items-center space-x-2 ml-4">
             <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                className="hover:bg-primary/10 p-2 rounded-full"
-              >
-                {theme === 'light' ? (
-                  <Sun className="h-6 w-6 text-yellow-500" />
-                ) : (
-                  <Moon className="h-6 w-6 text-blue-500" />
-                )}
-              </Button>
-            </div>
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="hover:bg-primary/10 p-2 rounded-full"
+            >
+              {theme === 'light' ? (
+                <Sun className="h-6 w-6 text-yellow-500" />
+              ) : (
+                <Moon className="h-6 w-6 text-blue-500" />
+              )}
+            </Button>
+          </div>
+
+          <div className="md:hidden flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="hover:bg-primary/10 p-2 rounded-full"
+            >
+              {theme === 'light' ? (
+                <Sun className="h-6 w-6 text-yellow-500" />
+              ) : (
+                <Moon className="h-6 w-6 text-blue-500" />
+              )}
+            </Button>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-foreground/80 hover:text-foreground transition-colors focus:outline-none"
+            >
+              ☰
+            </button>
           </div>
         </div>
       </div>
