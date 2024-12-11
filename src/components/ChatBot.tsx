@@ -9,6 +9,7 @@ import { ScrollArea } from './ui/scroll-area';
 import cvData from '../data/cvData';
 import prompt from '../data/prompt';
 import ReactMarkdown from 'react-markdown';
+import { ImSpinner2 } from 'react-icons/im';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -109,7 +110,10 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       </ScrollArea>
 
       {loading && (
-        <div className="p-4 text-center animate-pulse text-gray-600">Loading...</div>
+        <div className="p-4 text-center flex items-center justify-center gap-2">
+          <ImSpinner2 className="animate-spin text-3xl text-gray-600" />
+          <span className="text-gray-600">Starting...</span>
+        </div>
       )}
 
       <form onSubmit={handleSubmit} className="p-4 border-t">
