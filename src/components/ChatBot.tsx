@@ -5,6 +5,8 @@ import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
+import cvData from '../data/cvData';
+import prompt from '../data/prompt';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -39,10 +41,9 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: [
-            ...messages,
-            userMessage
-          ],
+          messages: [...messages, userMessage],
+          cvData,
+          prompt,
         }),
       });
 
@@ -57,10 +58,13 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Request Error:', error);
-      setMessages((prev) => [...prev, {
-        role: 'assistant',
-        content: `An unexpected error occurred: ${(error as Error).message}. Please try again later.`,
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: `An unexpected error occurred: ${(error as Error).message}. Please try again later.`,
+        },
+      ]);
     }
   };
 
