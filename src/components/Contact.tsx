@@ -1,31 +1,31 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { Card } from './ui/card';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Button } from './ui/button';
+// import { Input } from './ui/input';
+// import { Textarea } from './ui/textarea';
+// import { Button } from './ui/button';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
+  // const [formData, setFormData] = useState({
+  //   name: '',
+  //   email: '',
+  //   message: '',
+  // });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically handle the form submission
-    console.log('Form submitted:', formData);
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   // Here you would typically handle the form submission
+  //   console.log('Form submitted:', formData);
+  // };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   return (
     <section id="contact" className="py-20 bg-muted/50">
