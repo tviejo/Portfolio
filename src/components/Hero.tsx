@@ -16,7 +16,8 @@ const Hero = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="w-40 sm:w-48 md:w-56 h-40 sm:h-48 md:h-56 rounded-full overflow-hidden border-4 border-primary/20 p-1" // Responsive sizes
+            className="relative rounded-full overflow-hidden border-4 border-primary/20 p-1"
+            style={{ width: 'clamp(10rem, 20vw, 14rem)', height: 'clamp(10rem, 20vw, 14rem)' }}
           >
             <img
               src="/images/thomas.jpg"
