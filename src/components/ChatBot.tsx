@@ -1,5 +1,6 @@
 // src/components/ChatBot.tsx
 import { useState } from 'react';
+import axios from 'axios';
 import { X } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -35,25 +36,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     setInput('');
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messages: [...messages, userMessage],
-          context: `${prompt}\n${cvData}`,
-        }),
+      const response = await axios.post('/api/chat', {
+        messages: [...messages, userMessage],
+        context: `${prompt}\n${cvData}`,
       });
 
-      if (!response.ok) {
-        const responseText = await response.text();
-        console.error('API Error:', responseText);
-        throw new Error(`Failed to fetch response from API: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      const assistantMessage = data.choices[0].message;
+      const assistantMessage = response.data.choices[0].message;
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Request Error:', error);
@@ -61,7 +49,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         ...prev,
         {
           role: 'assistant',
-          content: `An unexpected error occurred: ${(error as Error).message}. Please try again later.`,
+          content: `An unexpected error occurred: ${error.message}. Please try again later.`,
         },
       ]);
     }
