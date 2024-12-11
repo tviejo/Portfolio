@@ -30,8 +30,8 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+  const scrollToTop = () => {
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const fetchAssistantMessage = async (userMessage: Message) => {
@@ -59,11 +59,11 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setLoading(true);
-    scrollToBottom();
 
     try {
       const assistantMessage = await fetchAssistantMessage(userMessage);
       setMessages((prev) => [...prev, assistantMessage]);
+      scrollToTop();
     } catch (error) {
       setMessages((prev) => [
         ...prev,
@@ -74,12 +74,11 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       ]);
     } finally {
       setLoading(false);
-      scrollToBottom();
     }
   };
 
   return (
-    <Card className="w-[350px] h-[500px] flex flex-col">
+    <Card className="w-[600px] h-[700px] flex flex-col">
       <div className="p-4 border-b flex justify-between items-center">
         <h3 className="font-semibold">Chat with AI Assistant</h3>
         <Button variant="ghost" size="icon" onClick={onClose}>
@@ -110,7 +109,9 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         </div>
       </ScrollArea>
 
-      {loading && <div className="p-4 text-center">Loading...</div>}
+      {loading && (
+        <div className="p-4 text-center animate-pulse text-gray-600">Loading...</div>
+      )}
 
       <form onSubmit={handleSubmit} className="p-4 border-t">
         <div className="flex gap-2">
