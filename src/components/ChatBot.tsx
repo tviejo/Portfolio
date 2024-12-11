@@ -46,21 +46,28 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         }),
       });
 
+      const responseText = await response.text();
+
       if (!response.ok) {
-        const errorDetails = await response.json();
-        console.error('Error:', errorDetails);
-        throw new Error(errorDetails.error || 'Failed to fetch response from API');
+        console.error('Error:', responseText);
+        throw new Error('Failed to fetch response from API');
       }
 
-      const data = await response.json();
-      const assistantMessage = data.choices[0].message;
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('Parse Error:', parseError);
+        throw new Error('Invalid JSON response from API');
+      }
 
+      const assistantMessage = data.choices[0].message;
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error:', error);
       setMessages((prev) => [...prev, {
         role: 'assistant',
-        content: `An error occurred: ${(error as Error).message}. Please try again later.`,
+        content: `An error occurred: ${error.message}. Please try again later.`,
       }]);
     }
   };
