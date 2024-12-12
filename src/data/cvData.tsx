@@ -35,7 +35,7 @@ Work Experience:
 
 Education:
 
-- **Seconde S**
+- **Premiere S**
     - Liceo Franco-Mexicano, Mexico City, Mexico
 
 - **Baccalauréat Scientifique (High School Diploma in Science)**
