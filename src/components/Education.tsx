@@ -33,7 +33,7 @@ const education = [
   },
   {
     school: 'Liceo Franco-Mexicano',
-    degree: 'Seconde S (Scientific Track)',
+    degree: 'Premiere S (Scientific Track)',
     period: 'September 2017 - June 2018',
     description: 'Completed foundational coursework in science and mathematics in an international environment while living in Mexico City, Mexico. Gained multicultural experience and improved my spanish.',
   },

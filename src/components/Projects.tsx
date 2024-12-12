@@ -22,6 +22,11 @@ const projects = [
     description: 'Designed and developed a Windows Forms application in C# to measure real-time energy consumption of IoT satellite transmitters during an internship in Slovenia.',
     icon: Code,
   },
+  {
+    title: 'Hackathons - DGSE and OpenAI',
+    description: 'Participated in hackathons organized by the DGSE and OpenAI, gaining experience in cybersecurity, AI, and cutting-edge technological solutions.',
+    icon: Lightbulb,
+  },
 ];
 
 
