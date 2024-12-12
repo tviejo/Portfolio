@@ -1,31 +1,53 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import { Card } from './ui/card';
-// import { Input } from './ui/input';
-// import { Textarea } from './ui/textarea';
-// import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Button } from './ui/button';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 const Contact = () => {
-  // const [formData, setFormData] = useState({
-  //   name: '',
-  //   email: '',
-  //   message: '',
-  // });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   // Here you would typically handle the form submission
-  //   console.log('Form submitted:', formData);
-  // };
+  const [notification, setNotification] = useState({
+    message: '',
+    type: '',
+  });
 
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  // ) => {
-  //   setFormData({
-  //     ...formData,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('https://formspree.io/f/mnnqywyk', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setNotification({ message: 'Message sent successfully!', type: 'success' });
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        const errorData = await response.json();
+        setNotification({ message: errorData.error || 'Failed to send the message.', type: 'error' });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setNotification({ message: 'Something went wrong. Please try again later.', type: 'error' });
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
     <section id="contact" className="py-20 bg-muted/50">
@@ -50,7 +72,7 @@ const Contact = () => {
             </div>
           </Card>
 
-          {/* <Card className="p-6">
+          <Card className="p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Input
@@ -85,7 +107,16 @@ const Contact = () => {
                 Send Message
               </Button>
             </form>
-          </Card> */}
+            {notification.message && (
+              <div
+                className={`mt-4 text-sm text-center ${
+                  notification.type === 'success' ? 'text-green-600' : 'text-red-600'
+                }`}
+              >
+                {notification.message}
+              </div>
+            )}
+          </Card>
         </div>
       </div>
     </section>
