@@ -33,23 +33,8 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const latestMessageRef = useRef<HTMLDivElement>(null);
 
-  const generateId = () =>
-    `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const generateId = () => `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-  // Load messages from localStorage on component mount
-  useEffect(() => {
-    const savedMessages = localStorage.getItem('chatMessages');
-    if (savedMessages) {
-      setMessages(JSON.parse(savedMessages));
-    }
-  }, []);
-
-  // Save messages to localStorage on every update
-  useEffect(() => {
-    localStorage.setItem('chatMessages', JSON.stringify(messages));
-  }, [messages]);
-
-  // Scroll to latest message
   useEffect(() => {
     latestMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [messages]);
@@ -103,19 +88,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         {
           id: generateId(),
           role: 'assistant',
-          content: `An unexpected error occurred: ${
-            error instanceof Error ? error.message : 'Unknown error'
-          }. Please try again later.`,
+          content: `An unexpected error occurred: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again later.`,
         },
       ]);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleChatClose = () => {
-    onClose();
-    localStorage.removeItem('chatMessages'); // Clear chat history on close if desired
   };
 
   return (
@@ -131,7 +109,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         <Button
           variant="ghost"
           size="icon"
-          onClick={handleChatClose}
+          onClick={onClose}
           className="hover:bg-primary/10 p-2 rounded-full"
           aria-label="Close chat"
         >
@@ -142,8 +120,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       <ScrollArea className="flex-1 p-4" aria-live="polite" ref={scrollRef}>
         <div className="space-y-4">
           {messages.map((message, index) => {
-            const isLoadingMessage =
-              loading && message.role === 'assistant' && !message.content;
+            const isLoadingMessage = loading && message.role === 'assistant' && !message.content;
 
             return (
               <div
