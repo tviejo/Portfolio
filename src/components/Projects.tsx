@@ -1,5 +1,5 @@
 import { Card } from './ui/card';
-import {  Globe, Gamepad, Server, Code} from 'lucide-react';
+import {  Globe, Gamepad, Server, Code, Lightbulb} from 'lucide-react';
 
 const projects = [
   {
