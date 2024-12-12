@@ -22,7 +22,7 @@ const Hero = () => {
             <img
               src="/images/thomas.jpg"
               alt="Thomas Viejo"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-full"
             />
           </motion.div>
 
@@ -63,7 +63,7 @@ const Hero = () => {
               className="hover:scale-105 transition-transform"
             >
               <a href="https://github.com/tviejo" target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2" /> GitHub
+                <Github className="mr-2 " /> GitHub
               </a>
             </Button>
             <Button
