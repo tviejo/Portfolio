@@ -99,8 +99,8 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   return (
     <Card
       className="
-        w-full max-w-[95%] sm:max-w-md md:max-w-lg lg:max-w-xl 
-        h-[70vh] 
+        w-full max-w-[98%] sm:max-w-2xl md:max-w-3xl lg:max-w-4xl 
+        min-w-[75%] h-[80vh] 
         flex flex-col mx-auto shadow-lg rounded-md overflow-hidden
       "
     >
