@@ -4,7 +4,8 @@ import { Card } from './ui/card';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const skills = [
-  'C/C++',
+  'C/C++/C#',
+  'Javascript/Typescript',
   'VHDL',
   'Grafcet',
   'Ladder',
@@ -18,7 +19,6 @@ const skills = [
   'Team Leadership',
   'Startup Development',
   'Business Strategy',
-  'Problem Solving',
   'Technical Documentation',
   'AI & Machine Learning Concepts',
   'Networking & Security Fundamentals',
@@ -56,13 +56,13 @@ const About = () => {
           <Card className="p-6 h-full bg-card/50 backdrop-blur-sm">
             <h3 className="text-xl font-semibold mb-4">Background</h3>
             <p className="text-foreground/80 mb-4">
-              I am a dedicated software developer and tech enthusiast with a unique blend of technical and creative skills. My professional journey includes building Windows applications, managing automation projects, and co-founding an AI-powered art curation startup.
+              I am a passionate and versatile software developer with expertise in programming languages such as C, C++, C#, JavaScript, VHDL, and Grafcet, complemented by strong project management skills. My international experience in IoT, automation, web development, and systems, along with entrepreneurial ventures like VermR, enable me to excel in complex and innovative environments.
             </p>
             <p className="text-foreground/80 mb-4">
-              My passion for technology and innovation has driven me to complete challenging projects such as developing a 3D game engine (Cub3D) and creating a custom web server (Webserv). These experiences sharpened my skills in system programming, networking, and application development.
+              My dedication to technology and innovation has driven me to undertake challenging projects, enhancing my skills in system programming, networking, and application development.
             </p>
             <p className="text-foreground/80">
-              Currently, I am advancing my expertise at 42 Paris while pursuing a Master’s in Law, Entrepreneurship, and Digital at Université Paris-Saclay. My diverse background enables me to tackle problems from both technical and strategic perspectives.
+              Currently, I am advancing my expertise at 42 Paris while pursuing a certificate in the Master 2 LEAD (Law, Entrepreneurship, And Digital) at Université Paris-Saclay. This diverse background allows me to approach problems from both technical and strategic perspectives, ensuring the delivery of high-quality solutions tailored to each project's unique needs.
             </p>
           </Card>
         </motion.div>

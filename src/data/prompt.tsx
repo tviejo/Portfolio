@@ -62,7 +62,7 @@ You are a highly knowledgeable assistant specializing in providing detailed and 
 - **École de Technologie Supérieure (Montreal):** Bachelor's in Automated Production (Not Completed)
 
 ## Technical Skills
-- **Programming Languages:** C, C++, Python, JavaScript, VHDL, Grafcet, Ladder
+- **Programming Languages:** C, C++, C#, Python, JavaScript, VHDL, Grafcet, Ladder
 - **Languages:** Fluent in French and English, Intermediate in Spanish
 
 ## Projects
