@@ -1,29 +1,46 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Card } from './ui/card';
-import { fadeInUp, staggerContainer } from '@/lib/animations';
+import { EnhancedCard } from './ui/enhanced-card';
+import { Briefcase, Code, Wrench, Rocket, Crown, Terminal, LucideIcon } from 'lucide-react';
+import { standardStyles } from '@/lib/theme-config';
+import SectionAnimation from './ui/section-animation';
+import DynamicBackground from './ui/dynamic-background';
 
-const skills = [
-  'C/C++/C#',
-  'Javascript/Typescript',
-  'VHDL',
-  'Grafcet',
-  'Ladder',
-  'Docker',
-  'Electronic Circuit Design',
-  'Microcontroller Programming',
-  'FPGA Programming',
-  'Embedded Systems Development',
-  'System Programming (Unix/Linux)',
-  'Project Management',
-  'Team Leadership',
-  'Startup Development',
-  'Business Strategy',
-  'Technical Documentation',
-  'AI & Machine Learning Concepts',
-  'Networking & Security Fundamentals',
+type SkillCategory = {
+  icon: LucideIcon;
+  name: string;
+  skills: string[];
+  primary?: boolean;
+};
+
+const skillCategories: SkillCategory[] = [
+  {
+    icon: Code,
+    name: "Programming Languages",
+    skills: ['C/C++/C#', 'JavaScript/TypeScript', 'VHDL', 'Grafcet', 'Ladder'],
+    primary: true
+  },
+  {
+    icon: Wrench,
+    name: "Development Tools",
+    skills: ['Docker', 'Git', 'UNIX Systems', 'Visual Studio', 'VS Code'],
+  },
+  {
+    icon: Terminal,
+    name: "Technical Skills",
+    skills: ['Electronic Circuit Design', 'Microcontroller Programming', 'FPGA Programming', 'Embedded Systems', 'System Programming'],
+  },
+  {
+    icon: Crown,
+    name: "Leadership",
+    skills: ['Project Management', 'Team Leadership', 'Technical Documentation', 'Startup Development', 'Business Strategy'],
+  },
+  {
+    icon: Rocket,
+    name: "Emerging Tech",
+    skills: ['AI & Machine Learning', 'Networking & Security', 'IoT Development', 'Cloud Services'],
+  },
 ];
-
 
 const About = () => {
   const [ref, inView] = useInView({
@@ -32,61 +49,159 @@ const About = () => {
   });
 
   return (
-    <section id="about" className="py-20 relative bg-muted/50">
-      {/* Background Pattern */}
+    <SectionAnimation
+      id="about"
+      className="py-20 relative overflow-hidden"
+      variants={{
+        initial: { opacity: 0 },
+        animate: { opacity: 1 }
+      }}
+    >
+      {/* Dynamic grid background */}
+      <DynamicBackground type="grid" />
+      
+      {/* Background elements */}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/50 to-background" />
-
-      <motion.div
-        ref={ref}
-        variants={staggerContainer}
-        initial="initial"
-        animate={inView ? "animate" : "initial"}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <motion.h2
-          variants={fadeInUp}
-          className="text-3xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60"
-        >
-          About Me
-        </motion.h2>
-
-        <div className="grid md:grid-cols-2 gap-12">
-        <motion.div variants={fadeInUp}>
-          <Card className="p-6 h-full bg-card/50 backdrop-blur-sm">
-            <h3 className="text-xl font-semibold mb-4">Background</h3>
-            <p className="text-foreground/80 mb-4">
-              I am a passionate and versatile software developer with expertise in programming languages such as C, C++, C#, JavaScript, VHDL, and Grafcet, complemented by strong project management skills. My international experience in IoT, automation, web development, and systems, along with entrepreneurial ventures like VermR, enable me to excel in complex and innovative environments.
-            </p>
-            <p className="text-foreground/80 mb-4">
-              My dedication to technology and innovation has driven me to undertake challenging projects, enhancing my skills in system programming, networking, and application development.
-            </p>
-            <p className="text-foreground/80">
-              Currently, I am advancing my expertise at 42 Paris while pursuing a certificate in the Master 2 LEAD (Law, Entrepreneurship, And Digital) at Université Paris-Saclay. This diverse background allows me to approach problems from both technical and strategic perspectives, ensuring the delivery of high-quality solutions tailored to each project's unique needs.
-            </p>
-          </Card>
-        </motion.div>
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/50 via-background/70 to-background/50" />
+      <div className="absolute left-0 top-20 h-80 w-80 rounded-full bg-primary/5 blur-3xl -z-5" />
+      <div className="absolute right-0 bottom-20 h-80 w-80 rounded-full bg-accent/5 blur-3xl -z-5" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-16">
+          <motion.span
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
+          >
+            <Briefcase className="w-4 h-4" />
+            <span>Professional Profile</span>
+          </motion.span>
+          
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className={standardStyles.sectionTitle}
+          >
+            About Me
+          </motion.h2>
+          
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '5rem' }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className={standardStyles.sectionDivider}
+          />
+        </div>
         
-          <motion.div variants={fadeInUp}>
-            <Card className="p-6 h-full bg-card/50 backdrop-blur-sm">
-              <h3 className="text-xl font-semibold mb-4">Technical Skills</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {skills.map((skill, index) => (
-                  <motion.div
-                    key={skill}
-                    variants={fadeInUp}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-center justify-center p-2 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors text-center text-sm"
-                  >
-                    {skill}
-                  </motion.div>
-                ))}
+        <div className="grid md:grid-cols-5 gap-8">
+          {/* Left column - Profile */}
+          <motion.div 
+            className="md:col-span-2"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <EnhancedCard className="h-full" hover3d>
+              <div className="p-6 h-full flex flex-col">
+                <div className="flex justify-center mb-8">
+                </div>
+                
+                <h3 className="text-xl font-semibold mb-4">Background</h3>
+                
+                <div className="space-y-4 text-foreground/80">
+                  <p className="leading-relaxed">
+                    I am a passionate and versatile software developer with expertise in programming languages such as C, C++, C#, JavaScript, VHDL, and Grafcet, complemented by strong project management skills.
+                  </p>
+                  
+                  <motion.div 
+                    className="relative h-px bg-primary/20 my-6"
+                    initial={{ width: 0 }}
+                    whileInView={{ width: '100%' }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                  />
+                  
+                  <p className="leading-relaxed">
+                    My international experience in IoT, automation, web development, and systems, along with entrepreneurial ventures like VermR, enable me to excel in complex and innovative environments.
+                  </p>
+                  
+                  <p className="leading-relaxed">
+                    Currently, I am advancing my expertise at 42 Paris while pursuing a certificate in the Master 2 LEAD (Law, Entrepreneurship, And Digital) at Université Paris-Saclay.
+                  </p>
+                </div>
               </div>
-            </Card>
+            </EnhancedCard>
+          </motion.div>
+          
+          {/* Right column - Skills */}
+          <motion.div 
+            className="md:col-span-3"
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="space-y-6">
+              {skillCategories.map((category, idx) => (
+                <motion.div 
+                  key={category.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 + idx * 0.1 }}
+                >
+                  <EnhancedCard gradient={category.primary}>
+                    <div className="p-5">
+                      <div className="flex items-center mb-4">
+                        <div className="rounded-full bg-primary/10 p-3 mr-3">
+                          <category.icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <h3 className="text-lg font-semibold">{category.name}</h3>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2">
+                        {category.skills.map((skill) => (
+                          <motion.div
+                            key={skill}
+                            className="px-3 py-1.5 rounded-full bg-primary/5 text-sm hover:bg-primary/20 transition-colors duration-300 cursor-pointer"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            {skill}
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </EnhancedCard>
+                </motion.div>
+              ))}
+              
+              {/* Bottom highlight box */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                <EnhancedCard className="backdrop-blur-sm border border-primary/20" glare>
+                  <div className="p-5 text-center">
+                    <blockquote className="italic text-foreground/80">
+                      "My diverse background allows me to approach problems from both technical and strategic perspectives, ensuring the delivery of high-quality solutions tailored to each project's unique needs."
+                    </blockquote>
+                  </div>
+                </EnhancedCard>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
-      </motion.div>
-    </section>
+      </div>
+    </SectionAnimation>
   );
 };
 

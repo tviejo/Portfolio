@@ -1,121 +1,201 @@
-import { useState, useEffect } from 'react';
-import { Moon, Sun } from 'lucide-react';
-import { Button } from './ui/button';
-import { useTheme } from '@/contexts/ThemeContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "./ui/button";
+import { Menu, X, Moon, Sun, Github, Linkedin } from "lucide-react";
+import { useTheme } from "../contexts/ThemeContext";
+import { standardStyles } from "@/lib/theme-config";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const [scrolled, setScrolled] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme && storedTheme !== theme) {
-      toggleTheme();
-    } else if (!storedTheme) {
-      localStorage.setItem('theme', 'dark');
-    }
-  }, [theme, toggleTheme]);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
 
-  const handleToggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    localStorage.setItem('theme', newTheme);
-    toggleTheme();
-  };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const menuItems = [
-    { label: 'About', href: '#about' },
-    { label: 'Experience', href: '#experience' },
-    { label: 'Education', href: '#education' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
+  const navItems = [
+    { name: "Home", href: "#home" },
+    { name: "About", href: "#about" },
+    { name: "Experience", href: "#experience" },
+    { name: "Projects", href: "#projects" },
+    { name: "Education", href: "#education" },
+    { name: "Contact", href: "#contact" },
   ];
 
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
+    <motion.header
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled 
+          ? "bg-background/80 backdrop-blur-md border-b border-border/50 py-2" 
+          : "bg-transparent py-4"
+      }`}
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 w-full bg-background/80 backdrop-blur-sm z-50 border-b shadow-lg"
     >
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <a href="#" className="text-2xl font-bold tracking-wide">
+      <div className="container mx-auto px-4 flex justify-between items-center">
+        <Link to="/" className="flex items-center gap-2">
+          <motion.span
+            className={`text-xl font-bold ${standardStyles.sectionTitle}`}
+            initial={{ opacity: 0, x: -5 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             Thomas Viejo
-          </a>
+          </motion.span>
+        </Link>
 
-          <div className="hidden md:flex items-center space-x-6">
-            {menuItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-foreground/80 hover:text-foreground transition-colors"
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-1">
+          {navItems.map((item, index) => (
+            <motion.div
+              key={item.name}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * index }}
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative group"
+                asChild
               >
-                {item.label}
-              </a>
-            ))}
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleToggleTheme}
-              className={`hover:bg-primary/5 p-1 rounded-full ${theme === 'light' ? 'text-white' : ''}`}
-            >
-              {theme === 'light' ? (
-                <Sun className="h-5 w-5 text-white" />
-              ) : (
-                <Moon className="h-5 w-5 text-blue-500" />
-              )}
-            </Button>
+                <a href={item.href}>
+                  {item.name}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+              </Button>
+            </motion.div>
+          ))}
+          
+          <div className="ml-2 flex items-center gap-2">
+            <motion.div whileHover={{ scale: 1.1 }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                asChild
+              >
+                <a 
+                  href="https://github.com/tviejo" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                >
+                  <Github className="h-4 w-4" />
+                </a>
+              </Button>
+            </motion.div>
+            
+            <motion.div whileHover={{ scale: 1.1 }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                asChild
+              >
+                <a 
+                  href="https://www.linkedin.com/in/thomas-viejo-9a213b195/"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </a>
+              </Button>
+            </motion.div>
           </div>
+        </nav>
 
-          <div className="md:hidden flex items-center space-x-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleToggleTheme}
-              className={`hover:bg-primary/5 p-1 rounded-full ${theme === 'light' ? 'text-white' : ''}`}
-            >
-              {theme === 'light' ? (
-                <Sun className="h-5 w-5 text-white" />
-              ) : (
-                <Moon className="h-5 w-5 text-blue-500" />
-              )}
-            </Button>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className={`text-foreground/80 hover:text-foreground transition-colors focus:outline-none text-xl ${theme === 'light' ? 'text-white' : ''}`}
-            >
-              ☰
-            </button>
-          </div>
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex items-center">
+          <Button variant="ghost" size="icon" onClick={toggleMenu} aria-label="Menu">
+            {isOpen ? <X /> : <Menu />}
+          </Button>
         </div>
       </div>
 
+      {/* Mobile Navigation */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-16 left-0 w-full bg-background shadow-lg border-t"
+            className="md:hidden absolute top-full left-0 w-full bg-background/95 backdrop-blur-lg border-b border-border"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <div className="px-4 pt-2 pb-3 space-y-1 sm:px-6">
-              {menuItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors"
-                  onClick={() => setIsOpen(false)}
+            <div className="container mx-auto py-4 px-4 flex flex-col space-y-3">
+              {navItems.map((item, i) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
                 >
-                  {item.label}
-                </a>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start"
+                    onClick={toggleMenu}
+                    asChild
+                  >
+                    <a href={item.href}>{item.name}</a>
+                  </Button>
+                </motion.div>
               ))}
+              <div className="pt-2 border-t border-border/30 flex justify-between">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Toggle theme"
+                  onClick={toggleTheme}
+                >
+                  {theme === "dark" ? <Sun /> : <Moon />}
+                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    asChild
+                  >
+                    <a 
+                      href="https://github.com/tviejo" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      aria-label="GitHub"
+                    >
+                      <Github className="h-4 w-4" />
+                    </a>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    asChild
+                  >
+                    <a 
+                      href="https://www.linkedin.com/in/thomas-viejo-9a213b195/"
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                    >
+                      <Linkedin className="h-4 w-4" />
+                    </a>
+                  </Button>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </motion.header>
   );
 };
 

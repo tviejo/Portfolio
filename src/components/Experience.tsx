@@ -1,8 +1,9 @@
-import { Building2, Calendar, ArrowRight } from 'lucide-react';
-import { Card } from './ui/card';
+import { Building2, Calendar, ArrowRight, Briefcase } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { fadeInUp, staggerContainer } from '@/lib/animations';
+import { EnhancedCard } from './ui/enhanced-card';
+import { standardStyles } from '@/lib/theme-config';
+import SectionAnimation from './ui/section-animation';
+import DynamicBackground from './ui/dynamic-background';
 
 const experiences = [
   {
@@ -78,69 +79,123 @@ const experiences = [
   },
 ];
 
-
 const Experience = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
   return (
-    <section id="experience" className="py-20 relative">
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background to-background/50" />
+    <SectionAnimation
+      id="experience"
+      className="py-20 relative overflow-hidden"
+      variants={{
+        initial: { opacity: 0 },
+        animate: { opacity: 1 }
+      }}
+    >
+      {/* Modern noise background */}
+      <DynamicBackground type="noise" />
+      
+      {/* Background elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute left-0 bottom-0 h-64 w-64 rounded-full bg-accent/5 blur-3xl" />
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-16">
+          <motion.span
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
+          >
+            <Briefcase className="w-4 h-4" />
+            <span>Career Journey</span>
+          </motion.span>
+          
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className={standardStyles.sectionTitle}
+          >
+            Work Experience
+          </motion.h2>
+          
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '5rem' }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className={standardStyles.sectionDivider}
+          />
+        </div>
 
-      <motion.div
-        ref={ref}
-        variants={staggerContainer}
-        initial="initial"
-        animate={inView ? "animate" : "initial"}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <motion.h2
-          variants={fadeInUp}
-          className="text-3xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60"
-        >
-          Work Experience
-        </motion.h2>
-
-        <div className="grid gap-8">
+        <div className="relative">
+          {/* Timeline line */}
+          <div className="absolute left-[15px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary/30 via-accent/20 to-primary/30 -ml-[1px] md:-ml-px hidden sm:block" />
+          
           {experiences.map((exp, index) => (
             <motion.div
               key={index}
-              variants={fadeInUp}
-              transition={{ delay: index * 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`relative md:flex items-start mb-12 ${
+                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+              }`}
             >
-              <Card className="p-6 hover:shadow-lg transition-shadow bg-card/50 backdrop-blur-sm">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                  <h3 className="text-xl font-semibold">{exp.title}</h3>
-                  <div className="flex items-center text-foreground/70">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    {exp.period}
+              {/* Timeline dot */}
+              <div className="hidden md:block absolute left-1/2 w-5 h-5 rounded-full bg-primary -ml-2.5 -mt-2 z-10" />
+              
+              {/* Experience Card */}
+              <div className={`md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
+                <EnhancedCard 
+                  className="group hover:shadow-lg transition-all backdrop-blur-sm"
+                  hover3d={index === 0}
+                  gradient={index === 0}
+                  glare={index !== 0}
+                >
+                  <div className="p-6">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                        <Building2 className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold">{exp.title}</h3>
+                        <div className="flex items-center text-sm text-foreground/70">
+                          <span className="font-medium">{exp.company}</span>
+                          <span className="mx-2">•</span>
+                          <span>{exp.location}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center text-foreground/70 bg-primary/5 px-3 py-2 rounded-full text-xs mb-4 inline-block">
+                      <Calendar className="w-3 h-3 mr-2" />
+                      {exp.period}
+                    </div>
+                    
+                    <p className="text-foreground/80 mb-4 leading-relaxed">{exp.description}</p>
+                    
+                    <ul className="space-y-2">
+                      {exp.highlights.map((highlight, i) => (
+                        <li key={i} className="flex items-start group/item">
+                          <div className="bg-primary/10 rounded-full p-1 mt-0.5 mr-2 group-hover/item:bg-primary/20 transition-colors">
+                            <ArrowRight className="w-3 h-3 text-primary" />
+                          </div>
+                          <span className="text-sm">{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-
-                <div className="flex items-center text-foreground/70 mb-4">
-                  <Building2 className="w-4 h-4 mr-2" />
-                  {exp.company} • {exp.location}
-                </div>
-
-                <p className="text-foreground/80 mb-4">{exp.description}</p>
-
-                <ul className="space-y-2">
-                  {exp.highlights.map((highlight, i) => (
-                    <li key={i} className="flex items-start">
-                      <ArrowRight className="w-4 h-4 mr-2 mt-1 text-primary" />
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
+                </EnhancedCard>
+              </div>
             </motion.div>
           ))}
         </div>
-      </motion.div>
-    </section>
+      </div>
+    </SectionAnimation>
   );
 };
 
