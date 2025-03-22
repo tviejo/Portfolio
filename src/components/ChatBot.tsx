@@ -201,7 +201,6 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
           initial: { opacity: 0, y: 20 },
           animate: { opacity: 1, y: 0 }
         }}
-        id="chatbot-section"
         className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       >
         {/* Modern grid background */}

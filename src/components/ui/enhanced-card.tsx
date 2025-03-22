@@ -25,7 +25,7 @@ const EnhancedCard = forwardRef<HTMLDivElement, EnhancedCardProps>(
         <motion.div
           className={cardClassName}
           ref={ref as React.Ref<HTMLDivElement>}
-          {...props}
+          {...(props as any)}
           whileHover={{ scale: 1.02 }}
           initial={{ boxShadow: "0 0 0 rgba(0, 0, 0, 0)" }}
           whileInView={{

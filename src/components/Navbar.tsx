@@ -83,6 +83,17 @@ const Navbar = () => {
               <Button
                 variant="ghost"
                 size="icon"
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? <Sun /> : <Moon />}
+              </Button>
+            </motion.div>
+            
+            <motion.div whileHover={{ scale: 1.1 }}>
+              <Button
+                variant="ghost"
+                size="icon"
                 asChild
               >
                 <a 

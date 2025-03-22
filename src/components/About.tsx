@@ -43,14 +43,13 @@ const skillCategories: SkillCategory[] = [
 ];
 
 const About = () => {
-  const [ref, inView] = useInView({
+  const { /* ref, inView */ } = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
   return (
     <SectionAnimation
-      id="about"
       className="py-20 relative overflow-hidden"
       variants={{
         initial: { opacity: 0 },

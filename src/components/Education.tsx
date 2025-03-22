@@ -46,7 +46,6 @@ const education = [
 const Education = () => {
   return (
     <SectionAnimation
-      id="education"
       className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-muted/30"
       variants={{
         initial: { opacity: 0 },

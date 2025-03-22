@@ -36,7 +36,6 @@ const projects = [
 const Projects = () => {
   return (
     <SectionAnimation
-      id="projects"
       className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       variants={{
         initial: { opacity: 0 },

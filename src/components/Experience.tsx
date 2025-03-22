@@ -82,7 +82,6 @@ const experiences = [
 const Experience = () => {
   return (
     <SectionAnimation
-      id="experience"
       className="py-20 relative overflow-hidden"
       variants={{
         initial: { opacity: 0 },

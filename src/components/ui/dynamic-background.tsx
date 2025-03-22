@@ -17,7 +17,6 @@ export const DynamicBackground: React.FC<DynamicBackgroundProps> = ({
 }) => {
   const { theme } = useTheme();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Update mouse position for interactive effects
@@ -53,7 +52,7 @@ export const DynamicBackground: React.FC<DynamicBackgroundProps> = ({
   const renderBackground = () => {
     switch (type) {
       case 'particles':
-        return <ParticlesBackground density={density} theme={theme} mousePosition={mousePosition} />;
+        return <ParticlesBackground density={density} theme={theme} />;
       case 'grid':
         return <GridBackground theme={theme} mousePosition={mousePosition} interactive={interactive} />;
       case 'noise':
@@ -311,3 +310,5 @@ const WavesBackground = ({ theme }: { theme: string }) => {
 };
 
 export default DynamicBackground;
+const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+
