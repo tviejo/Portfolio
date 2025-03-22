@@ -5,12 +5,10 @@ import { MessageCircle, X, Sparkles } from 'lucide-react';
 import ChatBot from './ChatBot';
 import { AnimatePresence, motion } from 'framer-motion';
 import DynamicBackground from './ui/dynamic-background';
-import { useTheme } from '@/contexts/ThemeContext';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { } = useTheme();
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [, setHasScrolled] = useState(false);
+  const [_hasScrolled, setHasScrolled] = useState(false);
   const [showChatTip, setShowChatTip] = useState(false);
 
   // Add scroll detection and automatic chat tip

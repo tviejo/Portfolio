@@ -15,6 +15,7 @@ import Projects from './components/Projects';
 import ChatBot from './components/ChatBot';
 import Contact from './components/Contact';
 import Education from './components/Education';
+import DocumentHead from './components/DocumentHead';
 
 // Component that combines all the main page sections
 const HomePage = () => (
@@ -30,13 +31,15 @@ const HomePage = () => (
 );
 
 function App() {
-  // Add smooth scroll behavior
+  // Add smooth scroll behavior and reset scroll position
   useEffect(() => {
     window.history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0); // Explicitly scroll to top on page load
   }, []);
 
   return (
     <ThemeProvider>
+      <DocumentHead />
       <AnimatePresence>
         <motion.div
           initial="initial"
