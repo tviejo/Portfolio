@@ -8,9 +8,9 @@ import DynamicBackground from './ui/dynamic-background';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { theme } = useTheme();
+  const { } = useTheme();
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
+  const [, setHasScrolled] = useState(false);
   const [showChatTip, setShowChatTip] = useState(false);
 
   // Add scroll detection and automatic chat tip

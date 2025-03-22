@@ -33,10 +33,8 @@ export const DynamicBackground: React.FC<DynamicBackgroundProps> = ({
     };
     
     const updateWindowSize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
+      // Don't need to store this value since it's not used
+      // Just call the function for its side effects
     };
     
     updateWindowSize();
@@ -310,5 +308,4 @@ const WavesBackground = ({ theme }: { theme: string }) => {
 };
 
 export default DynamicBackground;
-const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 

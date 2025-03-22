@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
 export const ModernGrid = ({ className = "" }: { className?: string }) => (
@@ -17,7 +16,7 @@ export const GlassMorphismEffect = ({ className = "" }: { className?: string }) 
 );
 
 export const CircleGrid = ({ className = "" }: { className?: string }) => {
-  const circles = Array(20).fill(0).map((_, i) => ({
+  const circles = Array(20).fill(0).map(() => ({
     size: Math.random() * 3 + 1,
     x: Math.random() * 100,
     y: Math.random() * 100,

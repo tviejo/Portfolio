@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Analytics } from "@vercel/analytics/react";
 import Layout from './components/Layout';
 import Error404 from './components/Error404';
 import Links from './components/Links';
@@ -43,6 +44,7 @@ function App() {
           variants={fadeIn}
           className="min-h-screen bg-background text-foreground"
         >
+          <Analytics />
           <Router>
             <Routes>
               <Route path="/" element={<Layout><HomePage /></Layout>} />

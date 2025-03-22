@@ -1,50 +1,15 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "./ui/button";
 import { ArrowRight, MessageSquare, Github, Linkedin, Mail, MapPin, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { standardStyles } from "@/lib/theme-config";
 import DynamicBackground from "./ui/dynamic-background";
-import { useTheme } from "@/contexts/ThemeContext";
-
-// Particle component
-const Particle = ({ id }: { id: number }) => {
-  const size = Math.random() * 4 + 1;
-  const initialX = Math.random() * 100;
-  const initialY = Math.random() * 100;
-  const duration = Math.random() * 20 + 10;
-  const delay = Math.random() * 2;
-  
-  return (
-    <motion.div
-      className="absolute rounded-full bg-primary/20"
-      style={{ width: size, height: size }}
-      initial={{ 
-        x: `${initialX}vw`, 
-        y: `${initialY}vh`,
-        opacity: 0.1 + Math.random() * 0.3
-      }}
-      animate={{ 
-        y: [`${initialY}vh`, `${initialY - 20}vh`, `${initialY}vh`],
-        opacity: [0.1 + Math.random() * 0.3, 0.5, 0.1 + Math.random() * 0.3],
-      }}
-      transition={{ 
-        repeat: Infinity, 
-        duration, 
-        delay,
-        ease: "easeInOut" 
-      }}
-    />
-  );
-};
 
 const Hero = () => {
   const navigate = useNavigate();
-  const [particles, setParticles] = useState<number[]>([]);
-  const { theme } = useTheme();
   
   useEffect(() => {
-    setParticles(Array.from({ length: 30 }, (_, i) => i));
   }, []);
   
   return (
