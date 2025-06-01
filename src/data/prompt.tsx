@@ -9,7 +9,7 @@ const getCurrentDate = (): string => {
 };
 
 // Function to generate the prompt with dynamic data
-const prompt = (): string => {
+export const prompt = (): string => {
   const currentDate = getCurrentDate();
 
   // Using String.raw to handle template literals with backticks
@@ -178,5 +178,3 @@ A results-driven entrepreneur with a background in electrical engineering and di
 
 Use these guidelines to maintain consistency, clarity, and professional formatting in every response.`;
 };
-
-export default prompt;
