@@ -1,10 +1,10 @@
 // api/chat.js
 
-const axios = require('axios');
-const cvData = require('../src/data/cvData').default;
-const { prompt: getPrompt } = require('../src/data/prompt');
+import axios from 'axios';
+import { cvData } from '../src/data/cvData';
+import { prompt } from '../src/data/prompt';
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
     const messagesWithContext = [
       {
         role: 'system',
-        content: `${getPrompt()}\n\nCV Data:\n${cvData}`
+        content: `${prompt()}\n\nCV Data:\n${cvData}`
       },
       ...messages
     ];

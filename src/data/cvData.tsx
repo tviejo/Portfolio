@@ -1,5 +1,5 @@
-// src/data/cvData.js
-const cvData = `
+// src/data/cvData.tsx
+export const cvData = `
 Name: Thomas Viejo
 Email: tviejo12@gmail.com
 Phone: +33624433321
@@ -161,5 +161,3 @@ Thomas Viejo, born on June 27, 2001, in Schoelcher, France, has obtained the gra
 - **Travel:** One year of travel with a motorhome from Argentina to Alaska.
 
 `;
-
-export default cvData;

@@ -9,7 +9,7 @@ const getCurrentDate = (): string => {
 };
 
 // Function to generate the prompt with dynamic data
-const prompt = (): string => {
+export const prompt = (): string => {
   const currentDate = getCurrentDate();
 
   return `
@@ -75,5 +75,3 @@ You are a highly knowledgeable assistant specializing in providing detailed and 
 Use these guidelines to ensure all responses are consistent, informative, and professionally formatted for recruiter evaluation.
   `;
 };
-
-export default prompt;
