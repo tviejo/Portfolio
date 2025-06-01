@@ -70,7 +70,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
           setFullResponse("");
           setCurrentResponse("");
         }
-      }, 20);
+      }, 3);
       
       return () => clearInterval(typing);
     }
