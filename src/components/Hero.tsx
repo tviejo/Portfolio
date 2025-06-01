@@ -1,14 +1,11 @@
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { standardStyles } from "@/lib/theme-config";
 import DynamicBackground from "./ui/dynamic-background";
 import { useLanguage } from "../contexts/LanguageContext";
 import { translations } from "@/lib/translations";
 
 const Hero = () => {
-  const navigate = useNavigate();
   const { language } = useLanguage();
   const t = translations[language].hero;
 

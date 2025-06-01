@@ -150,7 +150,7 @@ export const translations = {
           period: "September 2017 - June 2018",
           description: "Completed foundational coursework in science and mathematics in an international environment while living in Mexico City, Mexico. Gained multicultural experience and improved my spanish."
         }
-      }
+      } as EducationEntries
     },
     contact: {
       title: "Contact Me",
@@ -328,7 +328,7 @@ export const translations = {
           period: "Septembre 2017 - Juin 2018",
           description: "Cours fondamentaux en sciences et mathématiques dans un environnement international à Mexico. Acquisition d'une expérience multiculturelle et amélioration de mon espagnol."
         }
-      }
+      } as EducationEntries
     },
     contact: {
       title: "Me Contacter",

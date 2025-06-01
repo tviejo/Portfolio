@@ -6,7 +6,7 @@ import {
 } from '@radix-ui/react-icons';
 
 import { cn } from '@/lib/utils';
-import { ButtonProps, buttonVariants } from '@/components/ui/button';
+import { Button, ButtonProps } from '@/components/ui/button';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
@@ -52,10 +52,9 @@ const PaginationLink = ({
   <a
     aria-current={isActive ? 'page' : undefined}
     className={cn(
-      buttonVariants({
-        variant: isActive ? 'outline' : 'ghost',
-        size,
-      }),
+      Button,
+      isActive ? 'outline' : 'ghost',
+      size,
       className
     )}
     {...props}

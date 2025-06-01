@@ -5,7 +5,6 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { EnhancedCard } from "./ui/enhanced-card";
 import SectionAnimation from "./ui/section-animation";
-import { standardStyles } from "@/lib/theme-config";
 import { 
   Mail, 
   Send, 

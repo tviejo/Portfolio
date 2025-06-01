@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Globe, Gamepad, Server, Code, Lightbulb } from 'lucide-react';
+import { Gamepad, Server, Code, Lightbulb } from 'lucide-react';
 import { EnhancedCard } from "./ui/enhanced-card";
 import SectionAnimation from "./ui/section-animation";
 import { useLanguage } from "../contexts/LanguageContext";

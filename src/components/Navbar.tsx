@@ -1,23 +1,17 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
 import { Menu, X, Moon, Sun, Github, Linkedin } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { translations } from "@/lib/translations";
-import { standardStyles } from "@/lib/theme-config";
-import type { VariantProps } from "class-variance-authority";
-import { buttonVariants } from "./ui/button";
-
-type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
   const { language, toggleLanguage } = useLanguage();
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,7 +62,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
           <motion.span
-            className={`text-xl font-bold ${standardStyles.sectionTitle}`}
+            className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"
             initial={{ opacity: 0, x: -5 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}

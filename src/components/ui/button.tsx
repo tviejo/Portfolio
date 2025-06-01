@@ -47,7 +47,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (asChild) {
       const { type, ...divProps } = props;
       return (
-        <div
+        <span
           className={classes}
           {...divProps}
         />
