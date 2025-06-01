@@ -5,8 +5,13 @@ import { MessageCircle, X, Sparkles } from 'lucide-react';
 import ChatBot from './ChatBot';
 import { AnimatePresence, motion } from 'framer-motion';
 import DynamicBackground from './ui/dynamic-background';
+import { useLanguage } from '@/contexts/language-context';
+import { translations } from '@/lib/translations';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { language } = useLanguage();
+  const t = translations[language].chat;
+  
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [_hasScrolled, setHasScrolled] = useState(false);
   const [showChatTip, setShowChatTip] = useState(false);
@@ -72,16 +77,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <MessageCircle className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h4 className="font-medium text-sm mb-1">Have questions?</h4>
+                <h4 className="font-medium text-sm mb-1">{t.title}</h4>
                 <p className="text-xs text-muted-foreground mb-3">
-                  Try my AI assistant to learn more about my skills and experience!
+                  {t.description}
                 </p>
                 <Button 
                   size="sm" 
                   className="w-full text-xs bg-primary hover:bg-primary/90"
                   onClick={handleOpenChat}
                 >
-                  Start Chat
+                  {t.startChat}
                 </Button>
               </div>
             </div>
@@ -127,12 +132,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             {isChatOpen ? (
               <>
                 <X className="mr-2 group-hover:rotate-90 transition-transform text-foreground" />
-                <span className="text-foreground">Close Chat</span>
+                <span className="text-foreground">{t.closeChat}</span>
               </>
             ) : (
               <>
                 <MessageCircle className="mr-2 text-primary-foreground" />
-                <span className="text-primary-foreground">Chat with AI Assistant</span>
+                <span className="text-primary-foreground">{t.chatButton}</span>
                 <Sparkles className="h-3 w-3 text-primary-foreground/70 animate-pulse" />
               </>
             )}

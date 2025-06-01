@@ -28,10 +28,9 @@ export default async (req, res) => {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'gpt-4o-mini',
+        model: 'gpt-4.1-nano',
         messages: messagesWithContext,
-        temperature: 0.7,
-        max_tokens: 500
+        temperature: 0.5,
       },
       {
         headers: {

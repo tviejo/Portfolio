@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { LanguageProvider } from './contexts/language-context';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Analytics } from "@vercel/analytics/react";
 import Layout from './components/Layout';
@@ -39,25 +40,27 @@ function App() {
 
   return (
     <ThemeProvider>
-      <DocumentHead />
-      <AnimatePresence mode="wait">
-        <motion.div
-          initial="initial"
-          animate="animate"
-          variants={fadeIn}
-          className="min-h-screen bg-background text-foreground antialiased"
-        >
-          <Analytics />
-          <Router>
-            <Routes>
-              <Route path="/" element={<Layout><HomePage /></Layout>} />
-              <Route path="/links" element={<Links />} />
-              <Route path="/cv" element={<CV />} />
-              <Route path="*" element={<Error404 />} />
-            </Routes>
-          </Router>
-        </motion.div>
-      </AnimatePresence>
+      <LanguageProvider>
+        <DocumentHead />
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={fadeIn}
+            className="min-h-screen bg-background text-foreground antialiased"
+          >
+            <Analytics />
+            <Router>
+              <Routes>
+                <Route path="/" element={<Layout><HomePage /></Layout>} />
+                <Route path="/links" element={<Links />} />
+                <Route path="/cv" element={<CV />} />
+                <Route path="*" element={<Error404 />} />
+              </Routes>
+            </Router>
+          </motion.div>
+        </AnimatePresence>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

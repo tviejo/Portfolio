@@ -174,7 +174,22 @@ export const translations = {
     chat: {
       title: "Have questions?",
       description: "Try my AI assistant to learn more about my skills and experience!",
-      startChat: "Start Chat"
+      startChat: "Start Chat",
+      closeChat: "Close Chat",
+      chatButton: "Chat with AI Assistant",
+      welcome: {
+        title: "Welcome to AI Assistant",
+        description: "I can help you learn more about this portfolio, skills, and experience. What would you like to know?",
+        placeholder: "Ask me anything..."
+      },
+      assistant: {
+        title: "AI Assistant",
+        description: "Ask me anything about this portfolio",
+        thinking: "AI is thinking..."
+      },
+      poweredBy: "Powered by AI",
+      chatTitle: "Chat with My AI Assistant",
+      chatDescription: "Have questions about my experience, projects, or skills? My AI assistant can help answer them in real-time!"
     }
   },
   fr: {
@@ -352,7 +367,22 @@ export const translations = {
     chat: {
       title: "Des questions ?",
       description: "Essayez mon assistant IA pour en savoir plus sur mes compétences et mon expérience !",
-      startChat: "Démarrer le chat"
+      startChat: "Démarrer le chat",
+      closeChat: "Fermer le chat",
+      chatButton: "Discuter avec l'assistant IA",
+      welcome: {
+        title: "Bienvenue sur l'assistant IA",
+        description: "Je peux vous aider à en savoir plus sur ce portfolio, mes compétences et mon expérience. Que souhaitez-vous savoir ?",
+        placeholder: "Posez-moi une question..."
+      },
+      assistant: {
+        title: "Assistant IA",
+        description: "Posez-moi une question sur ce portfolio",
+        thinking: "L'IA réfléchit..."
+      },
+      poweredBy: "Propulsé par l'IA",
+      chatTitle: "Discutez avec mon assistant IA",
+      chatDescription: "Vous avez des questions sur mon expérience, mes projets ou mes compétences ? Mon assistant IA peut vous aider à y répondre en temps réel !"
     }
   }
 } as const;

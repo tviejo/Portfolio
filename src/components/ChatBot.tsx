@@ -7,6 +7,9 @@ import { Bot, Send, User, Loader2, Sparkles, X, BrainCircuit } from "lucide-reac
 import SectionAnimation from "./ui/section-animation";
 import { standardStyles } from "@/lib/theme-config";
 import { ModernGrid } from "./ui/background-effects";
+import ReactMarkdown from 'react-markdown';
+import { useLanguage } from "@/contexts/language-context";
+import { translations } from "@/lib/translations";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -19,18 +22,27 @@ interface ChatBotProps {
 }
 
 const ChatBot = ({ onClose }: ChatBotProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    { 
-      role: 'assistant', 
-      content: 'Hi there! I\'m an AI assistant. Ask me anything about this portfolio or skills!'
-    }
-  ]);
+  const { language } = useLanguage();
+  const t = translations[language].chat;
+  
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [typingEffect, setTypingEffect] = useState(false);
   const [currentResponse, setCurrentResponse] = useState("");
   const [fullResponse, setFullResponse] = useState("");
+  const [hasStartedChat, setHasStartedChat] = useState(false);
+
+  // Update welcome message when language changes
+  useEffect(() => {
+    if (!hasStartedChat) {
+      setMessages([{ 
+        role: 'assistant', 
+        content: t.welcome.description
+      }]);
+    }
+  }, [language, t.welcome.description, hasStartedChat]);
 
   // Scroll to bottom of messages
   useEffect(() => {
@@ -67,6 +79,11 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
+    
+    // Set hasStartedChat to true when first message is sent
+    if (!hasStartedChat) {
+      setHasStartedChat(true);
+    }
     
     // Add user message
     setMessages(prev => [...prev, { role: 'user', content: input }]);
@@ -121,9 +138,10 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 10 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
       >
-        <Card className="w-80 sm:w-96 shadow-xl border-primary/10 overflow-hidden backdrop-blur-sm bg-background/95">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-accent/10 py-3 px-4 flex flex-row items-center justify-between">
+        <Card className="w-full max-w-2xl h-[80vh] shadow-xl border-primary/10 overflow-hidden backdrop-blur-sm bg-background/95 flex flex-col">
+          <CardHeader className="bg-gradient-to-r from-primary/10 to-accent/10 py-3 px-4 flex flex-row items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <div className="relative">
                 <Bot className="h-5 w-5 text-primary" />
@@ -133,7 +151,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
                   transition={{ repeat: Infinity, duration: 2 }}
                 />
               </div>
-              <CardTitle className="text-base">AI Assistant</CardTitle>
+              <CardTitle className="text-base">{t.assistant.title}</CardTitle>
               <Sparkles className="h-3 w-3 text-yellow-500 animate-pulse" />
             </div>
             {onClose && (
@@ -143,73 +161,117 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
             )}
           </CardHeader>
           
-          <CardContent className="p-3 h-[300px] overflow-y-auto bg-gradient-to-b from-secondary/5 to-background/20">
-            <div className="space-y-3">
-              <AnimatePresence mode="popLayout">
-                {messages.map((message, i) => (
-                  <motion.div
-                    layout
-                    key={i}
+          <CardContent className={`p-3 flex-1 overflow-y-auto bg-gradient-to-b from-secondary/5 to-background/20 ${hasStartedChat ? '' : 'flex items-center justify-center'}`}>
+            {!hasStartedChat ? (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center max-w-md mx-auto"
+              >
+                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <Bot className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{t.welcome.title}</h3>
+                <p className="text-muted-foreground mb-6">
+                  {t.welcome.description}
+                </p>
+                <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto">
+                  <div className="flex gap-2">
+                    <Input
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      placeholder={t.welcome.placeholder}
+                      className="flex-1 bg-secondary/10 border-primary/20 focus-visible:ring-primary/30"
+                      disabled={isLoading || typingEffect}
+                    />
+                    <Button 
+                      type="submit" 
+                      disabled={isLoading || !input.trim() || typingEffect}
+                      className="bg-primary/90 hover:bg-primary transition-colors"
+                    >
+                      <Send className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </form>
+              </motion.div>
+            ) : (
+              <div className="space-y-3 pb-4">
+                <AnimatePresence mode="popLayout">
+                  {messages.map((message, i) => (
+                    <motion.div
+                      layout
+                      key={i}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.3 }}
+                      className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div className={`
+                        p-3 rounded-lg max-w-[85%] text-sm
+                        ${message.role === 'user' 
+                          ? 'bg-primary text-primary-foreground rounded-tr-none' 
+                          : 'bg-secondary/30 backdrop-blur-sm rounded-tl-none'}
+                      `}>
+                        {message.role === 'assistant' ? (
+                          <div className="prose prose-sm dark:prose-invert max-w-none">
+                            <ReactMarkdown>
+                              {i === messages.length - 1 && typingEffect 
+                                ? currentResponse || "..." 
+                                : message.content}
+                            </ReactMarkdown>
+                          </div>
+                        ) : (
+                          <p>
+                            {message.content}
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+                
+                {isLoading && (
+                  <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.3 }}
-                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className="flex justify-start"
                   >
-                    <div className={`
-                      p-2 rounded-lg max-w-[80%] text-sm
-                      ${message.role === 'user' 
-                        ? 'bg-primary text-primary-foreground rounded-tr-none' 
-                        : 'bg-secondary/30 backdrop-blur-sm rounded-tl-none'}
-                    `}>
-                      <p>
-                        {i === messages.length - 1 && message.role === 'assistant' && typingEffect 
-                          ? currentResponse || "..." 
-                          : message.content}
-                      </p>
+                    <div className="bg-secondary/30 backdrop-blur-sm p-2 rounded-lg rounded-tl-none max-w-[80%] text-sm">
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-3 w-3 animate-spin text-primary" />
+                        <span className="text-xs">{t.assistant.thinking}</span>
+                      </div>
                     </div>
                   </motion.div>
-                ))}
-              </AnimatePresence>
-              
-              {isLoading && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex justify-start"
-                >
-                  <div className="bg-secondary/30 backdrop-blur-sm p-2 rounded-lg rounded-tl-none max-w-[80%] text-sm">
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="h-3 w-3 animate-spin text-primary" />
-                      <span className="text-xs">AI is thinking...</span>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-              
-              <div ref={messagesEndRef} />
-            </div>
+                )}
+                
+                <div ref={messagesEndRef} />
+              </div>
+            )}
           </CardContent>
           
-          <CardFooter className="p-2 border-t bg-background/80 backdrop-blur-md">
-            <form onSubmit={handleSubmit} className="w-full flex gap-2">
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask me anything..."
-                className="flex-1 h-8 text-sm bg-transparent border-primary/20 focus-visible:ring-primary/30"
-                disabled={isLoading || typingEffect}
-              />
-              <Button 
-                type="submit" 
-                size="sm" 
-                disabled={isLoading || !input.trim() || typingEffect}
-                className="bg-primary/90 hover:bg-primary transition-colors"
-              >
-                <Send className="h-3 w-3" />
-              </Button>
-            </form>
-          </CardFooter>
+          {hasStartedChat && (
+            <CardFooter className="p-2 border-t bg-background/80 backdrop-blur-md shrink-0">
+              <form onSubmit={handleSubmit} className="w-full flex gap-2">
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder={t.welcome.placeholder}
+                  className="flex-1 h-8 text-sm bg-transparent border-primary/20 focus-visible:ring-primary/30"
+                  disabled={isLoading || typingEffect}
+                />
+                <Button 
+                  type="submit" 
+                  size="sm" 
+                  disabled={isLoading || !input.trim() || typingEffect}
+                  className="bg-primary/90 hover:bg-primary transition-colors"
+                >
+                  <Send className="h-3 w-3" />
+                </Button>
+              </form>
+            </CardFooter>
+          )}
         </Card>
       </motion.div>
     );
@@ -223,12 +285,12 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
           initial: { opacity: 0, y: 20 },
           animate: { opacity: 1, y: 0 }
         }}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+        className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-screen"
       >
         {/* Modern grid background */}
         <ModernGrid />
         
-        <div className="max-w-5xl mx-auto relative z-10">
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -238,7 +300,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
             >
               <BrainCircuit className="h-4 w-4" />
-              <span>Powered by AI</span>
+              <span>{t.poweredBy}</span>
             </motion.div>
             
             <motion.h2 
@@ -248,7 +310,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
             >
-              Chat with My AI Assistant
+              {t.chatTitle}
             </motion.h2>
             
             <motion.div
@@ -266,7 +328,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Have questions about my experience, projects, or skills? My AI assistant can help answer them in real-time!
+              {t.chatDescription}
             </motion.p>
           </div>
           
@@ -275,152 +337,193 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
             viewport={{ once: true }}
+            className="h-[70vh]"
           >
-            <Card className="w-full max-w-2xl mx-auto shadow-xl border-primary/10 overflow-hidden bg-background/80 backdrop-blur-sm">
-              <CardHeader className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm">
+            <Card className="w-full h-full shadow-xl border-primary/10 overflow-hidden bg-background/80 backdrop-blur-sm flex flex-col">
+              <CardHeader className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <Bot className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <CardTitle className="flex items-center gap-2">
-                      <span>AI Assistant</span>
+                      <span>{t.assistant.title}</span>
                       <Sparkles className="h-4 w-4 text-yellow-500 ml-1 animate-pulse" />
                     </CardTitle>
                     <CardDescription>
-                      Ask me anything about this portfolio
+                      {t.assistant.description}
                     </CardDescription>
                   </div>
                 </div>
               </CardHeader>
               
-              <CardContent className="p-4 h-[350px] overflow-y-auto bg-gradient-to-b from-background/50 to-secondary/5">
-                <div className="space-y-4">
-                  <AnimatePresence mode="popLayout">
-                    {messages.map((message, i) => (
-                      <motion.div
-                        layout
-                        key={i}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.3 }}
-                        className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                      >
-                        {message.role === 'assistant' && (
-                          <motion.div 
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.2 }}
-                            className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center mr-2 self-end"
-                          >
-                            <Bot className="h-4 w-4 text-primary" />
-                          </motion.div>
-                        )}
-                        
-                        <div className={`
-                          p-3 rounded-lg max-w-[80%] 
-                          ${message.role === 'user' 
-                            ? 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-tr-none shadow-lg' 
-                            : 'bg-secondary/30 backdrop-blur-sm rounded-tl-none shadow'}
-                        `}>
-                          <div className="flex items-center gap-2 mb-1">
-                            {message.role === 'user' && (
-                              <>
-                                <User className="h-4 w-4" />
-                                <span className="text-xs font-medium">You</span>
-                              </>
+              <CardContent className={`p-4 flex-1 overflow-y-auto bg-gradient-to-b from-background/50 to-secondary/5 ${hasStartedChat ? '' : 'flex items-center justify-center'}`}>
+                {!hasStartedChat ? (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center max-w-md mx-auto"
+                  >
+                    <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                      <Bot className="h-10 w-10 text-primary" />
+                    </div>
+                    <h3 className="text-2xl font-semibold mb-3">{t.welcome.title}</h3>
+                    <p className="text-muted-foreground mb-8 text-lg">
+                      {t.welcome.description}
+                    </p>
+                    <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto">
+                      <div className="flex gap-2">
+                        <Input
+                          value={input}
+                          onChange={(e) => setInput(e.target.value)}
+                          placeholder={t.welcome.placeholder}
+                          className="flex-1 bg-secondary/10 border-primary/20 focus-visible:ring-primary/30"
+                          disabled={isLoading || typingEffect}
+                        />
+                        <Button 
+                          type="submit" 
+                          disabled={isLoading || !input.trim() || typingEffect}
+                          className="bg-primary/90 hover:bg-primary transition-colors"
+                        >
+                          <Send className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </form>
+                  </motion.div>
+                ) : (
+                  <div className="space-y-4 pb-4">
+                    <AnimatePresence mode="popLayout">
+                      {messages.map((message, i) => (
+                        <motion.div
+                          layout
+                          key={i}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.3 }}
+                          className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                        >
+                          {message.role === 'assistant' && (
+                            <motion.div 
+                              initial={{ opacity: 0, scale: 0 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.2 }}
+                              className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center mr-2 self-end"
+                            >
+                              <Bot className="h-4 w-4 text-primary" />
+                            </motion.div>
+                          )}
+                          
+                          <div className={`
+                            p-3 rounded-lg max-w-[85%] 
+                            ${message.role === 'user' 
+                              ? 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-tr-none shadow-lg' 
+                              : 'bg-secondary/30 backdrop-blur-sm rounded-tl-none shadow'}
+                          `}>
+                            <div className="flex items-center gap-2 mb-1">
+                              {message.role === 'user' && (
+                                <>
+                                  <User className="h-4 w-4" />
+                                  <span className="text-xs font-medium">You</span>
+                                </>
+                              )}
+                            </div>
+                            {message.role === 'assistant' ? (
+                              <div className="prose prose-sm dark:prose-invert max-w-none">
+                                <ReactMarkdown>
+                                  {i === messages.length - 1 && typingEffect 
+                                    ? currentResponse || "..." 
+                                    : message.content}
+                                </ReactMarkdown>
+                              </div>
+                            ) : (
+                              <p>{message.content}</p>
                             )}
                           </div>
-                          <p>
-                            {i === messages.length - 1 && message.role === 'assistant' && typingEffect 
-                              ? currentResponse || "..." 
-                              : message.content}
-                          </p>
-                        </div>
-                        
-                        {message.role === 'user' && (
-                          <motion.div 
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.2 }}
-                            className="h-8 w-8 rounded-full bg-primary flex items-center justify-center ml-2 self-end"
-                          >
-                            <User className="h-4 w-4 text-primary-foreground" />
-                          </motion.div>
-                        )}
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                  
-                  {isLoading && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex justify-start items-end gap-2"
-                    >
+                          
+                          {message.role === 'user' && (
+                            <motion.div 
+                              initial={{ opacity: 0, scale: 0 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.2 }}
+                              className="h-8 w-8 rounded-full bg-primary flex items-center justify-center ml-2 self-end"
+                            >
+                              <User className="h-4 w-4 text-primary-foreground" />
+                            </motion.div>
+                          )}
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                    
+                    {isLoading && (
                       <motion.div 
-                        className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center"
-                        animate={{ scale: [1, 1.05, 1] }}
-                        transition={{ repeat: Infinity, duration: 1.5 }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex justify-start items-end gap-2"
                       >
-                        <Bot className="h-4 w-4 text-primary" />
-                      </motion.div>
-                      
-                      <div className="bg-secondary/30 backdrop-blur-sm p-3 rounded-lg rounded-tl-none max-w-[80%]">
-                        <div className="flex items-center gap-2">
-                          <div className="flex gap-1">
-                            <motion.span
-                              className="h-2 w-2 rounded-full bg-primary"
-                              animate={{ scale: [1, 1.2, 1] }}
-                              transition={{ repeat: Infinity, duration: 1, delay: 0 }}
-                            />
-                            <motion.span
-                              className="h-2 w-2 rounded-full bg-primary"
-                              animate={{ scale: [1, 1.2, 1] }}
-                              transition={{ repeat: Infinity, duration: 1, delay: 0.2 }}
-                            />
-                            <motion.span
-                              className="h-2 w-2 rounded-full bg-primary"
-                              animate={{ scale: [1, 1.2, 1] }}
-                              transition={{ repeat: Infinity, duration: 1, delay: 0.4 }}
-                            />
+                        <motion.div 
+                          className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center"
+                          animate={{ scale: [1, 1.05, 1] }}
+                          transition={{ repeat: Infinity, duration: 1.5 }}
+                        >
+                          <Bot className="h-4 w-4 text-primary" />
+                        </motion.div>
+                        
+                        <div className="bg-secondary/30 backdrop-blur-sm p-3 rounded-lg rounded-tl-none max-w-[80%]">
+                          <div className="flex items-center gap-2">
+                            <div className="flex gap-1">
+                              <motion.span
+                                className="h-2 w-2 rounded-full bg-primary"
+                                animate={{ scale: [1, 1.2, 1] }}
+                                transition={{ repeat: Infinity, duration: 1, delay: 0 }}
+                              />
+                              <motion.span
+                                className="h-2 w-2 rounded-full bg-primary"
+                                animate={{ scale: [1, 1.2, 1] }}
+                                transition={{ repeat: Infinity, duration: 1, delay: 0.2 }}
+                              />
+                              <motion.span
+                                className="h-2 w-2 rounded-full bg-primary"
+                                animate={{ scale: [1, 1.2, 1] }}
+                                transition={{ repeat: Infinity, duration: 1, delay: 0.4 }}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  )}
-                  
-                  <div ref={messagesEndRef} />
-                </div>
+                      </motion.div>
+                    )}
+                    
+                    <div ref={messagesEndRef} />
+                  </div>
+                )}
               </CardContent>
               
-              <CardFooter className="p-3 border-t bg-background/60 backdrop-blur-md">
-                <form onSubmit={handleSubmit} className="w-full flex gap-2">
-                  <Input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask me anything..."
-                    className="flex-1 bg-secondary/10 border-primary/20 focus-visible:ring-primary/30"
-                    disabled={isLoading || typingEffect}
-                  />
-                  <Button 
-                    type="submit" 
-                    disabled={isLoading || !input.trim() || typingEffect}
-                    className="bg-primary hover:bg-primary/90 transition-colors group"
-                  >
-                    <Send className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  </Button>
-                </form>
-              </CardFooter>
+              {hasStartedChat && (
+                <CardFooter className="p-3 border-t bg-background/60 backdrop-blur-md shrink-0">
+                  <form onSubmit={handleSubmit} className="w-full flex gap-2">
+                    <Input
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      placeholder={t.welcome.placeholder}
+                      className="flex-1 bg-secondary/10 border-primary/20 focus-visible:ring-primary/30"
+                      disabled={isLoading || typingEffect}
+                    />
+                    <Button 
+                      type="submit" 
+                      disabled={isLoading || !input.trim() || typingEffect}
+                      className="bg-primary hover:bg-primary/90 transition-colors group"
+                    >
+                      <Send className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    </Button>
+                  </form>
+                </CardFooter>
+              )}
             </Card>
           </motion.div>
         </div>
       </SectionAnimation>
     );
   }
-
-  // ...existing code...
 };
 
 export default ChatBot;
