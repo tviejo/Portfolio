@@ -1,15 +1,23 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
 import { Menu, X, Moon, Sun, Github, Linkedin } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "@/lib/translations";
 import { standardStyles } from "@/lib/theme-config";
+import type { VariantProps } from "class-variance-authority";
+import { buttonVariants } from "./ui/button";
+
+type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { language, toggleLanguage } = useLanguage();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,16 +29,30 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Experience", href: "#experience" },
-    { name: "Projects", href: "#projects" },
-    { name: "Education", href: "#education" },
-    { name: "Contact", href: "#contact" },
+    { name: translations[language].nav.home, href: "/" },
+    { name: translations[language].nav.about, href: "/#about" },
+    { name: translations[language].nav.experience, href: "/#experience" },
+    { name: translations[language].nav.projects, href: "/#projects" },
+    { name: translations[language].nav.education, href: "/#education" },
+    { name: translations[language].nav.contact, href: "/#contact" },
   ];
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (href.startsWith('/#')) {
+      e.preventDefault();
+      const sectionId = href.substring(2);
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
     <motion.header
@@ -56,7 +78,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center space-x-4">
           {navItems.map((item, index) => (
             <motion.div
               key={item.name}
@@ -70,23 +92,39 @@ const Navbar = () => {
                 className="relative group"
                 asChild
               >
-                <a href={item.href}>
+                <Link 
+                  to={item.href}
+                  onClick={(e) => scrollToSection(e, item.href)}
+                >
                   {item.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-                </a>
+                </Link>
               </Button>
             </motion.div>
           ))}
           
-          <div className="ml-2 flex items-center gap-2">
+          <div className="flex items-center space-x-2 ml-4">
             <motion.div whileHover={{ scale: 1.1 }}>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
                 aria-label="Toggle theme"
+                className="text-primary hover:text-primary/90"
               >
-                {theme === "dark" ? <Sun /> : <Moon />}
+                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              </Button>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.1 }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleLanguage}
+                aria-label="Toggle language"
+                className="text-primary hover:text-primary/90 font-medium"
+              >
+                {language.toUpperCase()}
               </Button>
             </motion.div>
             
@@ -158,19 +196,37 @@ const Navbar = () => {
                     onClick={toggleMenu}
                     asChild
                   >
-                    <a href={item.href}>{item.name}</a>
+                    <Link 
+                      to={item.href}
+                      onClick={(e) => scrollToSection(e, item.href)}
+                    >
+                      {item.name}
+                    </Link>
                   </Button>
                 </motion.div>
               ))}
-              <div className="pt-2 border-t border-border/30 flex justify-between">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Toggle theme"
-                  onClick={toggleTheme}
-                >
-                  {theme === "dark" ? <Sun /> : <Moon />}
-                </Button>
+              
+              <div className="flex items-center justify-between pt-2">
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Toggle theme"
+                    onClick={toggleTheme}
+                    className="text-primary hover:text-primary/90"
+                  >
+                    {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={toggleLanguage}
+                    aria-label="Toggle language"
+                    className="text-primary hover:text-primary/90 font-medium"
+                  >
+                    {language.toUpperCase()}
+                  </Button>
+                </div>
                 <div className="flex gap-2">
                   <Button
                     variant="ghost"

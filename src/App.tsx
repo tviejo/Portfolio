@@ -12,22 +12,22 @@ import Hero from './components/Hero';
 import About from './components/About';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
-import ChatBot from './components/ChatBot';
-import Contact from './components/Contact';
 import Education from './components/Education';
+import Contact from './components/Contact';
 import DocumentHead from './components/DocumentHead';
 
-// Component that combines all the main page sections
+// Modern, streamlined homepage layout
 const HomePage = () => (
-  <>
+  <div className="relative">
     <Hero />
-    <About />
-    <Experience />
-    <Education />
-    <Projects />
-    <ChatBot />
-    <Contact />
-  </>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+      <About />
+      <Experience />
+      <Projects />
+      <Education />
+      <Contact />
+    </div>
+  </div>
 );
 
 function App() {
@@ -40,12 +40,12 @@ function App() {
   return (
     <ThemeProvider>
       <DocumentHead />
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         <motion.div
           initial="initial"
           animate="animate"
           variants={fadeIn}
-          className="min-h-screen bg-background text-foreground"
+          className="min-h-screen bg-background text-foreground antialiased"
         >
           <Analytics />
           <Router>

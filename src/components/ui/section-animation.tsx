@@ -5,6 +5,7 @@ interface SectionAnimationProps extends MotionProps {
   children: ReactNode;
   className?: string;
   delay?: number;
+  id?: string;
 }
 
 export const fadeInUp = {
@@ -29,10 +30,12 @@ const SectionAnimation = ({
   children, 
   className = "",
   delay = 0,
+  id,
   ...props 
 }: SectionAnimationProps) => {
   return (
     <motion.section
+      id={id}
       initial="initial"
       whileInView="animate"
       viewport={{ once: true, margin: "-100px" }}

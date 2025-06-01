@@ -17,8 +17,13 @@ import {
   Loader2
 } from "lucide-react";
 import { NeumorphicBackground } from "./ui/background-effects";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "@/lib/translations";
 
 const Contact = () => {
+  const { language } = useLanguage();
+  const t = translations[language].contact;
+
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -57,7 +62,8 @@ const Contact = () => {
   
   return (
     <SectionAnimation
-      className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+      id="contact"
+      className="py-16 relative overflow-hidden"
       variants={{
         initial: { opacity: 0 },
         animate: { opacity: 1 },
@@ -66,24 +72,18 @@ const Contact = () => {
       {/* Modern neumorphic background */}
       <NeumorphicBackground />
       
-      <div className="max-w-6xl mx-auto relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            <Mail className="h-4 w-4" />
-            <span>Get In Touch</span>
-          </div>
-          <h2 className={standardStyles.sectionTitle}>Contact Me</h2>
-          <div className={standardStyles.sectionDivider}></div>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Have a question or want to work together? Feel free to reach out!
-          </p>
-        </motion.div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-12">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"
+          >
+            {t.title}
+          </motion.h2>
+        </div>
         
         <div className="grid md:grid-cols-2 gap-8 items-start">
           {/* Contact Form */}
@@ -95,100 +95,98 @@ const Contact = () => {
           >
             <EnhancedCard gradient className="overflow-hidden">
               {isSubmitted ? (
-                <div className="p-8 text-center">
+                <div className="p-6 text-center">
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4"
+                    className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4"
                   >
-                    <CheckCircle className="h-8 w-8 text-primary" />
+                    <CheckCircle className="h-6 w-6 text-primary" />
                   </motion.div>
-                  <h3 className="text-xl font-bold mb-2">Message Sent!</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Thank you for reaching out. I'll get back to you as soon as possible.
+                  <h3 className="text-lg font-bold mb-2">Message Sent!</h3>
+                  <p className="text-muted-foreground mb-4 text-sm">
+                    {t.messageSent}
                   </p>
                   <Button 
                     onClick={() => setIsSubmitted(false)}
-                    className="group"
+                    variant="outline"
+                    size="sm"
                   >
-                    <Mail className="mr-2 h-4 w-4" />
-                    Send Another Message
+                    {t.sendAnotherMessage}
                   </Button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="p-6">
-                  <h3 className="text-xl font-bold mb-6">Send Me a Message</h3>
-                  
-                  <div className="space-y-4 mb-6">
+                  <div className="space-y-4">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-1">
-                        Your Name
+                      <label htmlFor="name" className="block text-sm font-medium mb-2">
+                        {t.name}
                       </label>
                       <Input
                         id="name"
                         name="name"
-                        placeholder="John Doe"
+                        placeholder={t.namePlaceholder}
                         required
                         value={formState.name}
                         onChange={handleChange}
-                        className="bg-secondary/10 border-primary/10 focus-visible:ring-primary/30"
+                        className="bg-secondary/10 border-primary/10"
                       />
                     </div>
                     
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-1">
-                        Email Address
+                      <label htmlFor="email" className="block text-sm font-medium mb-2">
+                        {t.email}
                       </label>
                       <Input
                         id="email"
                         name="email"
                         type="email"
-                        placeholder="john@example.com"
+                        placeholder={t.emailPlaceholder}
                         required
                         value={formState.email}
                         onChange={handleChange}
-                        className="bg-secondary/10 border-primary/10 focus-visible:ring-primary/30"
+                        className="bg-secondary/10 border-primary/10"
                       />
                     </div>
                     
                     <div>
-                      <label htmlFor="message" className="block text-sm font-medium mb-1">
-                        Your Message
+                      <label htmlFor="message" className="block text-sm font-medium mb-2">
+                        {t.message}
                       </label>
                       <Textarea
                         id="message"
                         name="message"
-                        placeholder="Your message here..."
+                        placeholder={t.messagePlaceholder}
                         required
-                        rows={5}
+                        rows={4}
                         value={formState.message}
                         onChange={handleChange}
-                        className="bg-secondary/10 border-primary/10 focus-visible:ring-primary/30"
+                        className="bg-secondary/10 border-primary/10"
                       />
                     </div>
                   </div>
                   
                   {error && (
-                    <div className="bg-destructive/10 text-destructive p-3 rounded-md mb-4 text-sm">
+                    <div className="bg-destructive/10 text-destructive p-3 rounded-md mt-4 text-sm">
                       {error}
                     </div>
                   )}
                   
                   <Button
                     type="submit"
-                    className="w-full group"
+                    className="w-full mt-4"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Sending...
+                        {t.sending}
                       </>
                     ) : (
                       <>
-                        <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        Send Message
+                        <Send className="mr-2 h-4 w-4" />
+                        {t.send}
                       </>
                     )}
                   </Button>
@@ -198,48 +196,39 @@ const Contact = () => {
           </motion.div>
           
           {/* Contact Info */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <EnhancedCard className="group hover:shadow-md transition-all">
-                <div className="p-6">
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="mt-1 bg-primary/10 p-3 rounded-full">
-                      <Mail className="h-5 w-5 text-primary" />
+              <EnhancedCard>
+                <div className="p-6 space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-primary/10 p-2 rounded-full">
+                      <Mail className="h-4 w-4 text-primary" />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-medium mb-1">Email</h3>
-                      <a 
-                        href="mailto:tviejo12@gmail.com" 
-                        className="text-primary hover:underline"
-                      >
-                        tviejo12@gmail.com
-                      </a>
-                    </div>
+                    <a 
+                      href="mailto:tviejo12@gmail.com" 
+                      className="text-primary hover:underline text-sm"
+                    >
+                      {t.emailAddress}
+                    </a>
                   </div>
                   
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="mt-1 bg-primary/10 p-3 rounded-full">
-                      <MapPin className="h-5 w-5 text-primary" />
+                  <div className="flex items-center gap-4">
+                    <div className="bg-primary/10 p-2 rounded-full">
+                      <MapPin className="h-4 w-4 text-primary" />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-medium mb-1">Location</h3>
-                      <p className="text-muted-foreground">Paris, France</p>
-                    </div>
+                    <p className="text-muted-foreground text-sm">{t.location}</p>
                   </div>
                   
-                  <div className="flex items-start gap-4">
-                    <div className="mt-1 bg-primary/10 p-3 rounded-full">
-                      <Phone className="h-5 w-5 text-primary" />
+                  <div className="flex items-center gap-4">
+                    <div className="bg-primary/10 p-2 rounded-full">
+                      <Phone className="h-4 w-4 text-primary" />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-medium mb-1">Phone</h3>
-                      <p className="text-muted-foreground">(+33) 6 24 43 33 21</p>
-                    </div>
+                    <p className="text-muted-foreground text-sm">{t.phone}</p>
                   </div>
                 </div>
               </EnhancedCard>
@@ -248,58 +237,43 @@ const Contact = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
             >
               <EnhancedCard>
                 <div className="p-6">
-                  <h3 className="text-lg font-medium mb-4">Connect With Me</h3>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <motion.a 
-                      href="https://github.com/tviejo"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-4 rounded-lg bg-secondary/20 hover:bg-primary/10 transition-colors"
-                      whileHover={{ y: -5 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                  <div className="flex justify-center gap-4">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      asChild
+                      className="hover:bg-primary/10"
                     >
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Github className="h-5 w-5 text-primary" />
-                      </div>
-                      <span className="text-sm">GitHub</span>
-                    </motion.a>
+                      <a href="https://github.com/tviejo" target="_blank" rel="noopener noreferrer">
+                        <Github className="h-5 w-5" />
+                      </a>
+                    </Button>
                     
-                    <motion.a 
-                      href="https://www.linkedin.com/in/thomas-viejo-9a213b195/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 p-4 rounded-lg bg-secondary/20 hover:bg-primary/10 transition-colors"
-                      whileHover={{ y: -5 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      asChild
+                      className="hover:bg-primary/10"
                     >
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Linkedin className="h-5 w-5 text-primary" />
-                      </div>
-                      <span className="text-sm">LinkedIn</span>
-                    </motion.a>
+                      <a
+                        href="https://www.linkedin.com/in/thomas-viejo-9a213b195/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Linkedin className="h-5 w-5" />
+                      </a>
+                    </Button>
                   </div>
                 </div>
               </EnhancedCard>
             </motion.div>
           </div>
         </div>
-        
-        {/* Add a footer section with copyright */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="mt-20 text-center text-sm text-muted-foreground"
-        >
-          <p>© {new Date().getFullYear()} Thomas Viejo. All rights reserved.</p>
-        </motion.div>
       </div>
     </SectionAnimation>
   );
