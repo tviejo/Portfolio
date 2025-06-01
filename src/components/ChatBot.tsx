@@ -73,10 +73,25 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     setInput('');
     setIsLoading(true);
     
-    // Simulate API call - replace with your actual API integration
-    setTimeout(() => {
-      const response = `Thanks for your message! This is a demo response. In the real implementation, this would be connected to an AI service.`;
-      setFullResponse(response);
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: [...messages, { role: 'user', content: input }]
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from AI');
+      }
+
+      const data = await response.json();
+      const aiResponse = data.choices[0].message.content;
+      
+      setFullResponse(aiResponse);
       setIsLoading(false);
       setTypingEffect(true);
       
@@ -85,7 +100,14 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         role: 'assistant', 
         content: "..." // This will be replaced when typing finishes
       }]);
-    }, 1000);
+    } catch (error) {
+      console.error('Error:', error);
+      setIsLoading(false);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: "I apologize, but I'm having trouble connecting right now. Please try again later."
+      }]);
+    }
   };
 
   // Determine if this is being rendered as a modal or a section
