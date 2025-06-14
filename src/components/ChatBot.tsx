@@ -462,17 +462,6 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
                           transition={{ duration: 0.3 }}
                           className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                         >
-                          {message.role === 'assistant' && (
-                            <motion.div 
-                              initial={{ opacity: 0, scale: 0 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ duration: 0.2 }}
-                              className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center mr-2 self-end"
-                            >
-                              <Bot className="h-4 w-4 text-primary" />
-                            </motion.div>
-                          )}
-                          
                           <div className={`
                             p-3 rounded-lg max-w-[85%] 
                             ${message.role === 'user' 
@@ -480,10 +469,15 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
                               : 'bg-secondary/30 backdrop-blur-sm rounded-tl-none shadow'}
                           `}>
                             <div className="flex items-center gap-2 mb-1">
-                              {message.role === 'user' && (
+                              {message.role === 'user' ? (
                                 <>
                                   <User className="h-4 w-4" />
                                   <span className="text-xs font-medium">You</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Bot className="h-4 w-4" />
+                                  <span className="text-xs font-medium">Assistant</span>
                                 </>
                               )}
                             </div>
@@ -499,17 +493,6 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
                               <p>{message.content}</p>
                             )}
                           </div>
-                          
-                          {message.role === 'user' && (
-                            <motion.div 
-                              initial={{ opacity: 0, scale: 0 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ duration: 0.2 }}
-                              className="h-8 w-8 rounded-full bg-primary flex items-center justify-center ml-2 self-end"
-                            >
-                              <User className="h-4 w-4 text-primary-foreground" />
-                            </motion.div>
-                          )}
                         </motion.div>
                       ))}
                     </AnimatePresence>

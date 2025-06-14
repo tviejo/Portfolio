@@ -204,6 +204,14 @@ export const translations = {
       poweredBy: "Powered by AI",
       chatTitle: "Chat with My AI Assistant",
       chatDescription: "Have questions about my experience, projects, or skills? My AI assistant can help answer them in real-time!"
+    },
+    links: {
+      subtitle: "Software Developer & Automation Specialist",
+      website: "Visit Website",
+      downloadCV: "Download CV",
+      email: "Email Me",
+      phone: "Call Me",
+      saveContact: "Save Contact Info"
     }
   },
   fr: {
@@ -253,10 +261,10 @@ export const translations = {
           period: "Février 2025 - Août 2025",
           description: "Contribution à des projets de développement logiciel pour les systèmes de confinement GNL maritime.",
           highlights: [
-            "Développement d’un logiciel Python de calepinage automatique de panneaux pour réservoirs terrestres d’ammoniac (50–100 m de diamètre) avec interface PyQt",
+            "Développement d'un logiciel Python de calepinage automatique de panneaux pour réservoirs terrestres d'ammoniac (50–100 m de diamètre) avec interface PyQt",
             "Mise en œuvre de calculs géométriques avancés avec NumPy et gestion des pièces via une base SQL",
             "Automatisation de la nomenclature et des plans via VBA pour SolidWorks et scripts Python pour FreeCAD et ezdxf",
-            "Création d’algorithmes d’optimisation du placement de membranes et panneaux aux géométries complexes, avec export automatique des livrables",
+            "Création d'algorithmes d'optimisation du placement de membranes et panneaux aux géométries complexes, avec export automatique des livrables",
             "Participation à la formalisation des règles métier avec les ingénieurs conception et production"
           ]
         },
@@ -411,6 +419,14 @@ export const translations = {
       poweredBy: "Propulsé par l'IA",
       chatTitle: "Discutez avec mon assistant IA",
       chatDescription: "Vous avez des questions sur mon expérience, mes projets ou mes compétences ? Mon assistant IA peut vous aider à y répondre en temps réel !"
+    },
+    links: {
+      subtitle: "Développeur Logiciel & Spécialiste en Automatisation",
+      website: "Visiter le Site",
+      downloadCV: "Télécharger CV",
+      email: "M'envoyer un Email",
+      phone: "M'appeler",
+      saveContact: "Sauvegarder Contact"
     }
   }
 } as const;
