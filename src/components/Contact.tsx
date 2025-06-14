@@ -46,14 +46,25 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
-    
-    // Simulate form submission
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch("https://formspree.io/f/mnnqywyk", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formState)
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'envoi du message.");
+      }
+
       setIsSubmitted(true);
       setFormState({ name: "", email: "", message: "" });
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setError("Erreur lors de l'envoi du message.");
     } finally {
       setIsSubmitting(false);
     }

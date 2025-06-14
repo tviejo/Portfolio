@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "./ui/card";
 import { Input } from "./ui/input";
-import { Bot, Send, User, Loader2, Sparkles, X, BrainCircuit } from "lucide-react";
+import { Bot, Send, User, Loader2, Sparkles, X, BrainCircuit, StopCircle } from "lucide-react";
 import SectionAnimation from "./ui/section-animation";
 import { standardStyles } from "@/lib/theme-config";
 import { ModernGrid } from "./ui/background-effects";
@@ -33,6 +33,8 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
   const [currentResponse, setCurrentResponse] = useState("");
   const [fullResponse, setFullResponse] = useState("");
   const [hasStartedChat, setHasStartedChat] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   // Update welcome message when language changes
   useEffect(() => {
@@ -80,15 +82,17 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     e.preventDefault();
     if (!input.trim()) return;
     
-    // Set hasStartedChat to true when first message is sent
     if (!hasStartedChat) {
       setHasStartedChat(true);
     }
     
-    // Add user message
     setMessages(prev => [...prev, { role: 'user', content: input }]);
     setInput('');
     setIsLoading(true);
+    setIsStreaming(true);
+    
+    // Create new AbortController for this request
+    abortControllerRef.current = new AbortController();
     
     try {
       const response = await fetch('/api/chat', {
@@ -99,31 +103,77 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
         body: JSON.stringify({
           messages: [...messages, { role: 'user', content: input }]
         }),
+        signal: abortControllerRef.current.signal
       });
 
       if (!response.ok) {
         throw new Error('Failed to get response from AI');
       }
 
-      const data = await response.json();
-      const aiResponse = data.choices[0].message.content;
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('No reader available');
+
+      let accumulatedResponse = '';
       
-      setFullResponse(aiResponse);
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = new TextDecoder().decode(value);
+        const lines = chunk.split('\n');
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') {
+              setIsStreaming(false);
+              setIsLoading(false);
+              setMessages(prev => [...prev.slice(0, -1), { 
+                role: 'assistant', 
+                content: accumulatedResponse
+              }]);
+              return;
+            }
+            
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.content;
+              if (content) {
+                accumulatedResponse += content;
+                setCurrentResponse(accumulatedResponse);
+              }
+            } catch (e) {
+              console.error('Error parsing chunk:', e);
+            }
+          }
+        }
+      }
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        console.log('Request was aborted');
+        setMessages(prev => [...prev.slice(0, -1), { 
+          role: 'assistant', 
+          content: currentResponse || "Response interrupted."
+        }]);
+      } else {
+        console.error('Error:', error);
+        setMessages(prev => [...prev, { 
+          role: 'assistant', 
+          content: "I apologize, but I'm having trouble connecting right now. Please try again later."
+        }]);
+      }
+    } finally {
+      setIsStreaming(false);
       setIsLoading(false);
-      setTypingEffect(true);
-      
-      // Add a placeholder for the assistant's response
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: "..." // This will be replaced when typing finishes
-      }]);
-    } catch (error) {
-      console.error('Error:', error);
+      abortControllerRef.current = null;
+    }
+  };
+
+  const handleInterrupt = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      setIsStreaming(false);
       setIsLoading(false);
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: "I apologize, but I'm having trouble connecting right now. Please try again later."
-      }]);
     }
   };
 
@@ -261,14 +311,23 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
                   className="flex-1 h-8 text-sm bg-transparent border-primary/20 focus-visible:ring-primary/30"
                   disabled={isLoading || typingEffect}
                 />
-                <Button 
-                  type="submit" 
-                  size="sm" 
-                  disabled={isLoading || !input.trim() || typingEffect}
-                  className="bg-primary/90 hover:bg-primary transition-colors"
-                >
-                  <Send className="h-3 w-3" />
-                </Button>
+                {isStreaming ? (
+                  <Button 
+                    type="button"
+                    onClick={handleInterrupt}
+                    className="bg-destructive hover:bg-destructive/90 transition-colors"
+                  >
+                    <StopCircle className="h-4 w-4" />
+                  </Button>
+                ) : (
+                  <Button 
+                    type="submit" 
+                    disabled={isLoading || !input.trim() || typingEffect}
+                    className="bg-primary hover:bg-primary/90 transition-colors group"
+                  >
+                    <Send className="h-3 w-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </Button>
+                )}
               </form>
             </CardFooter>
           )}
@@ -508,13 +567,23 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
                       className="flex-1 bg-secondary/10 border-primary/20 focus-visible:ring-primary/30"
                       disabled={isLoading || typingEffect}
                     />
-                    <Button 
-                      type="submit" 
-                      disabled={isLoading || !input.trim() || typingEffect}
-                      className="bg-primary hover:bg-primary/90 transition-colors group"
-                    >
-                      <Send className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                    </Button>
+                    {isStreaming ? (
+                      <Button 
+                        type="button"
+                        onClick={handleInterrupt}
+                        className="bg-destructive hover:bg-destructive/90 transition-colors"
+                      >
+                        <StopCircle className="h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <Button 
+                        type="submit" 
+                        disabled={isLoading || !input.trim() || typingEffect}
+                        className="bg-primary hover:bg-primary/90 transition-colors group"
+                      >
+                        <Send className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      </Button>
+                    )}
                   </form>
                 </CardFooter>
               )}

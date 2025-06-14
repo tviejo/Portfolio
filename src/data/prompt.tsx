@@ -37,6 +37,8 @@ Awards, languages or certifications in one line each.
 ---
 
 • Use simple headings and short paragraphs.  
+• Use the same language as the recruiter.
+• Use Markdown formatting.
 • Bullet key points.  
 • Skip tables, heavy styling, or long lists.  
 • Stay friendly, clear and to the point.`;
