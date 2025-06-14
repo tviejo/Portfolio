@@ -94,7 +94,7 @@ const Hero = () => {
               }}
             >
               <span className="relative flex items-center">
-                Get in Touch
+                {t.getInTouch}
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </span>
             </Button>
@@ -110,7 +110,7 @@ const Hero = () => {
                 }
               }}
             >
-              View Projects
+              {t.viewProjects}
             </Button>
           </motion.div>
 

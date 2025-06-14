@@ -13,35 +13,6 @@ type SkillCategory = {
   primary?: boolean;
 };
 
-const skillCategories: SkillCategory[] = [
-  {
-    icon: Code,
-    name: "Core Languages",
-    skills: ['C/C++/C#', 'JavaScript/TypeScript', 'VHDL'],
-    primary: true
-  },
-  {
-    icon: Wrench,
-    name: "Tools & Platforms",
-    skills: ['Docker', 'Git', 'VS Code', 'Visual Studio'],
-  },
-  {
-    icon: Terminal,
-    name: "Technical Expertise",
-    skills: ['Embedded Systems', 'FPGA Programming', 'System Programming'],
-  },
-  {
-    icon: Crown,
-    name: "Leadership",
-    skills: ['Project Management', 'Team Leadership', 'Technical Documentation'],
-  },
-  {
-    icon: Rocket,
-    name: "Emerging Tech",
-    skills: ['AI & ML', 'IoT Development', 'Cloud Services'],
-  },
-];
-
 const About = () => {
   const { language } = useLanguage();
   const t = translations[language].about;
@@ -50,6 +21,35 @@ const About = () => {
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  const skillCategories: SkillCategory[] = [
+    {
+      icon: Code,
+      name: t.skillCategories.coreLanguages,
+      skills: ['C/C++/C#', 'python', 'JavaScript/TypeScript', 'CSS/HTML', 'Grafcet/Ladder', 'VHDL'],
+      primary: true
+    },
+    {
+      icon: Wrench,
+      name: t.skillCategories.toolsPlatforms,
+      skills: [ 'Git', 'VS Code', 'Visual Studio', 'Docker', 'Linux', 'Windows'],
+    },
+    {
+      icon: Terminal,
+      name: t.skillCategories.technicalExpertise,
+      skills: ['Embedded Systems', 'FPGA Programming', 'System Programming'],
+    },
+    {
+      icon: Crown,
+      name: t.skillCategories.leadership,
+      skills: ['Project Management', 'Team Leadership', 'Technical Documentation'],
+    },
+    {
+      icon: Rocket,
+      name: t.skillCategories.emergingTech,
+      skills: ['AI & ML', 'IoT Development', 'Cloud Services'],
+    },
+  ];
 
   return (
     <SectionAnimation

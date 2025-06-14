@@ -12,13 +12,22 @@ export const translations = {
       greeting: "Hi, I'm Thomas Viejo",
       title: "Software Developer & Automation Specialist",
       location: "Paris, France",
-      description: "Passionate about creating innovative solutions and automating complex processes."
+      description: "Passionate about creating innovative solutions and automating complex processes.",
+      getInTouch: "Get in Touch",
+      viewProjects: "View Projects"
     },
     about: {
       title: "About Me",
       description1: "I'm a passionate software developer and automation specialist with experience in various technologies and industries. My journey has taken me from developing Windows applications to managing automation projects and exploring entrepreneurial ventures.",
       description2: "Currently, I'm expanding my expertise at 42 Paris while also pursuing a Master's in Law Entrepreneurship and Digital at Université Paris-Saclay. My diverse background in electrical engineering, industrial computing, and software development allows me to approach problems from multiple angles.",
-      skills: "Technical Skills"
+      skills: "Technical Skills",
+      skillCategories: {
+        coreLanguages: "Core Languages",
+        toolsPlatforms: "Tools & Platforms",
+        technicalExpertise: "Technical Expertise",
+        leadership: "Leadership",
+        emergingTech: "Emerging Tech"
+      }
     },
     experience: {
       title: "Experience",
@@ -212,6 +221,13 @@ export const translations = {
       email: "Email Me",
       phone: "Call Me",
       saveContact: "Save Contact Info"
+    },
+    error404: {
+      title: "Page Not Found",
+      description: "Oops! The page you're looking for can't be found.",
+      goHome: "Go Home",
+      contactSupport: "Contact Support",
+      location: "Paris, France"
     }
   },
   fr: {
@@ -227,13 +243,22 @@ export const translations = {
       greeting: "Bonjour, je suis Thomas Viejo",
       title: "Développeur Logiciel & Spécialiste en Automatisation",
       location: "Paris, France",
-      description: "Passionné par la création de solutions innovantes et l'automatisation de processus complexes."
+      description: "Passionné par la création de solutions innovantes et l'automatisation de processus complexes.",
+      getInTouch: "Me Contacter",
+      viewProjects: "Voir les Projets"
     },
     about: {
       title: "À propos de moi",
       description1: "Je suis un développeur passionné et spécialiste en automatisation avec une expérience dans diverses technologies et industries. Mon parcours m'a mené du développement d'applications Windows à la gestion de projets d'automatisation et à l'exploration d'initiatives entrepreneuriales.",
       description2: "Actuellement, j'approfondis mes compétences à 42 Paris tout en poursuivant un Master 2 en Droit, Entrepreneuriat et Digital à l'Université Paris-Saclay. Ma formation diversifiée en génie électrique, informatique industrielle et développement logiciel me permet d'aborder les problèmes sous différents angles.",
-      skills: "Compétences Techniques"
+      skills: "Compétences Techniques",
+      skillCategories: {
+        coreLanguages: "Langages",
+        toolsPlatforms: "Outils & Plateformes",
+        technicalExpertise: "Expertise Technique",
+        leadership: "Leadership",
+        emergingTech: "Technologies Émergentes"
+      }
     },
     experience: {
       title: "Expérience",
@@ -427,6 +452,13 @@ export const translations = {
       email: "M'envoyer un Email",
       phone: "M'appeler",
       saveContact: "Sauvegarder Contact"
+    },
+    error404: {
+      title: "Page Non Trouvée",
+      description: "Oups ! La page que vous recherchez n'existe pas.",
+      goHome: "Retour à l'Accueil",
+      contactSupport: "Contacter le Support",
+      location: "Paris, France"
     }
   }
 } as const;
