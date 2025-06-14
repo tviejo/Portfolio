@@ -86,7 +86,8 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       setHasStartedChat(true);
     }
     
-    setMessages(prev => [...prev, { role: 'user', content: input }]);
+    const userMessage: Message = { role: 'user' as const, content: input };
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
     setIsStreaming(true);
@@ -101,7 +102,7 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: [...messages, { role: 'user', content: input }]
+          messages: [...messages, userMessage]
         }),
         signal: abortControllerRef.current.signal
       });
@@ -114,6 +115,10 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
       if (!reader) throw new Error('No reader available');
 
       let accumulatedResponse = '';
+      
+      // Add an empty assistant message that will be updated
+      const emptyAssistantMessage: Message = { role: 'assistant', content: '' };
+      setMessages(prev => [...prev, emptyAssistantMessage]);
       
       while (true) {
         const { done, value } = await reader.read();
@@ -128,10 +133,6 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
             if (data === '[DONE]') {
               setIsStreaming(false);
               setIsLoading(false);
-              setMessages(prev => [...prev.slice(0, -1), { 
-                role: 'assistant', 
-                content: accumulatedResponse
-              }]);
               return;
             }
             
@@ -141,6 +142,16 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
               if (content) {
                 accumulatedResponse += content;
                 setCurrentResponse(accumulatedResponse);
+                // Update the last message (assistant's message) with the accumulated response
+                setMessages(prev => {
+                  const newMessages = [...prev];
+                  const updatedMessage: Message = {
+                    role: 'assistant',
+                    content: accumulatedResponse
+                  };
+                  newMessages[newMessages.length - 1] = updatedMessage;
+                  return newMessages;
+                });
               }
             } catch (e) {
               console.error('Error parsing chunk:', e);
@@ -151,16 +162,22 @@ const ChatBot = ({ onClose }: ChatBotProps) => {
     } catch (error: any) {
       if (error.name === 'AbortError') {
         console.log('Request was aborted');
-        setMessages(prev => [...prev.slice(0, -1), { 
-          role: 'assistant', 
-          content: currentResponse || "Response interrupted."
-        }]);
+        setMessages(prev => {
+          const newMessages = [...prev];
+          const interruptedMessage: Message = {
+            role: 'assistant',
+            content: currentResponse || "Response interrupted."
+          };
+          newMessages[newMessages.length - 1] = interruptedMessage;
+          return newMessages;
+        });
       } else {
         console.error('Error:', error);
-        setMessages(prev => [...prev, { 
-          role: 'assistant', 
+        const errorMessage: Message = {
+          role: 'assistant',
           content: "I apologize, but I'm having trouble connecting right now. Please try again later."
-        }]);
+        };
+        setMessages(prev => [...prev, errorMessage]);
       }
     } finally {
       setIsStreaming(false);

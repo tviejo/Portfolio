@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, animate } from 'framer-motion';
 import { Button } from './ui/button';
 import { Globe, Phone, Mail, User, FileText, ExternalLink } from 'lucide-react';
@@ -12,6 +12,12 @@ interface Link {
   action?: () => void;
 }
 
+interface ApiLink {
+  name: string;
+  url: string;
+  icon: string;
+}
+
 function clamp(val: number, min: number, max: number) {
   return Math.max(min, Math.min(max, val));
 }
@@ -19,6 +25,48 @@ function clamp(val: number, min: number, max: number) {
 function Links() {
   const { language } = useLanguage();
   const t = translations[language].links;
+  const [links, setLinks] = useState<Link[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLinks = async () => {
+      try {
+        const response = await fetch('/api/links');
+        if (!response.ok) throw new Error('Failed to fetch links');
+        const data: ApiLink[] = await response.json();
+        
+        // Map API links to component links
+        const mappedLinks: Link[] = [
+          ...data.map(link => ({
+            label: link.name,
+            url: link.url,
+            icon: <Globe className="w-5 h-5" /> // Default icon, you can map icons based on the icon string
+          })),
+          // Add static links
+          { label: t.downloadCV, url: "/documents/Thomas-Viejo-CV.pdf", icon: <FileText className="w-5 h-5" /> },
+          { label: t.email, url: "mailto:tviejo12@gmail.com", icon: <Mail className="w-5 h-5" /> },
+          { label: t.phone, url: "tel:+33624433321", icon: <Phone className="w-5 h-5" /> },
+          { label: t.saveContact, url: "#", icon: <User className="w-5 h-5" />, action: handleSaveContact },
+        ];
+        
+        setLinks(mappedLinks);
+      } catch (error) {
+        console.error('Error fetching links:', error);
+        // Fallback to static links if API fails
+        setLinks([
+          { label: t.website, url: "https://www.thomas-viejo.fr", icon: <Globe className="w-5 h-5" /> },
+          { label: t.downloadCV, url: "/documents/Thomas-Viejo-CV.pdf", icon: <FileText className="w-5 h-5" /> },
+          { label: t.email, url: "mailto:tviejo12@gmail.com", icon: <Mail className="w-5 h-5" /> },
+          { label: t.phone, url: "tel:+33624433321", icon: <Phone className="w-5 h-5" /> },
+          { label: t.saveContact, url: "#", icon: <User className="w-5 h-5" />, action: handleSaveContact },
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLinks();
+  }, [t]);
 
   const handleSaveContact = () => {
     const contactInfo = {
@@ -37,14 +85,6 @@ function Links() {
     link.click();
     document.body.removeChild(link);
   };
-
-  const links: Link[] = [
-    { label: t.website, url: "https://www.thomas-viejo.fr", icon: <Globe className="w-5 h-5" /> },
-    { label: t.downloadCV, url: "/documents/Thomas-Viejo-CV.pdf", icon: <FileText className="w-5 h-5" /> },
-    { label: t.email, url: "mailto:tviejo12@gmail.com", icon: <Mail className="w-5 h-5" /> },
-    { label: t.phone, url: "tel:+33624433321", icon: <Phone className="w-5 h-5" /> },
-    { label: t.saveContact, url: "#", icon: <User className="w-5 h-5" />, action: handleSaveContact },
-  ];
 
   // 3D tilt effect on drag only, clamped to ±30deg
   const cardRef = useRef<HTMLDivElement>(null);
@@ -69,14 +109,22 @@ function Links() {
     // Clamp rotation to ±30deg
     const rotateYVal = clamp(((x - centerX) / centerX) * 30, -30, 30);
     const rotateXVal = clamp(-((y - centerY) / centerY) * 30, -30, 30);
-    rotateX.set(rotateXVal);
-    rotateY.set(rotateYVal);
+    rotateX.set(rotateYVal);
+    rotateY.set(rotateXVal);
   }
 
   function handlePointerUpOrLeave() {
     setDragging(false);
     animate(rotateX, 0, { type: 'spring', stiffness: 300, damping: 30 });
     animate(rotateY, 0, { type: 'spring', stiffness: 300, damping: 30 });
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
   return (
