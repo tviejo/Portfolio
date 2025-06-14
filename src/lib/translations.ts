@@ -19,7 +19,7 @@ export const translations = {
     about: {
       title: "About Me",
       description1: "I'm a passionate software developer and automation specialist with experience in various technologies and industries. My journey has taken me from developing Windows applications to managing automation projects and exploring entrepreneurial ventures.",
-      description2: "Currently, I'm expanding my expertise at 42 Paris while also pursuing a Master's in Law Entrepreneurship and Digital at Université Paris-Saclay. My diverse background in electrical engineering, industrial computing, and software development allows me to approach problems from multiple angles.",
+      description2: "Currently at 42 Paris, I am expanding my expertise with an Intership at GTT as a Software Development Engineer Intern. My diverse background in electrical engineering, industrial computing, and software development allows me to approach problems from multiple angles.",
       skills: "Technical Skills",
       skillCategories: {
         coreLanguages: "Core Languages",
@@ -250,7 +250,7 @@ export const translations = {
     about: {
       title: "À propos de moi",
       description1: "Je suis un développeur passionné et spécialiste en automatisation avec une expérience dans diverses technologies et industries. Mon parcours m'a mené du développement d'applications Windows à la gestion de projets d'automatisation et à l'exploration d'initiatives entrepreneuriales.",
-      description2: "Actuellement, j'approfondis mes compétences à 42 Paris tout en poursuivant un Master 2 en Droit, Entrepreneuriat et Digital à l'Université Paris-Saclay. Ma formation diversifiée en génie électrique, informatique industrielle et développement logiciel me permet d'aborder les problèmes sous différents angles.",
+      description2: "Actuellement à 42 Paris, j'élargis mes compétences avec un stage à GTT en tant que Développeur Logiciel. Ma formation diversifiée en génie électrique, informatique industrielle et développement logiciel me permet d'aborder les problèmes sous différents angles.",
       skills: "Compétences Techniques",
       skillCategories: {
         coreLanguages: "Langages",
