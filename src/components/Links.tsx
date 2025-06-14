@@ -129,7 +129,7 @@ function Links() {
   // Always use 2/3 aspect ratio for the card
   useEffect(() => {
     setCardStyle({
-      aspectRatio: '2 / 3',
+      aspectRatio: '10 / 16',
       height: 'auto',
       minHeight: 'unset',
       maxHeight: 'unset',
@@ -242,7 +242,7 @@ function Links() {
           background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(0,0,0,0.18) 100%);
         }
         .responsive-card {
-          aspect-ratio: 1/2 wa !important;
+          aspect-ratio: 6/11 wa !important;
         }
       `}</style>
     </div>
