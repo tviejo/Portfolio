@@ -242,7 +242,7 @@ function Links() {
           background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(0,0,0,0.18) 100%);
         }
         .responsive-card {
-          aspect-ratio: 3/5 !important;
+          aspect-ratio: 6/11 !important;
         }
       `}</style>
     </div>
