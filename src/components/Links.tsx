@@ -91,6 +91,19 @@ function Links() {
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
   const [dragging, setDragging] = useState(false);
+  const [cardStyle, setCardStyle] = useState<React.CSSProperties>({});
+
+  // Always use 2/3 aspect ratio for the card
+  useEffect(() => {
+    setCardStyle({
+      aspectRatio: '2 / 3',
+      height: 'auto',
+      minHeight: 'unset',
+      maxHeight: 'unset',
+      width: '90%',
+      maxWidth: '430px',
+    });
+  }, []);
 
   function handlePointerDown(e: React.PointerEvent) {
     setDragging(true);
@@ -131,8 +144,8 @@ function Links() {
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-background to-secondary/5">
       <motion.div
         ref={cardRef}
-        className="aspect-[9/16] w-[430px] max-w-full min-h-[765px] max-h-[95vh] bg-white/10 dark:bg-black/30 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl flex flex-col glassy-gradient relative select-none px-0 py-0 overflow-hidden"
-        style={{ rotateX, rotateY, touchAction: 'none' }}
+        className="responsive-card w-[430px] max-w-full bg-white/10 dark:bg-black/30 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl flex flex-col glassy-gradient relative select-none px-0 py-0 overflow-hidden"
+        style={{ ...cardStyle, rotateX, rotateY, touchAction: 'none' }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUpOrLeave}
@@ -190,10 +203,22 @@ function Links() {
         .glassy-gradient {
           background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(0,0,0,0.18) 100%);
         }
+        .responsive-card {
+          aspect-ratio: 2/3 !important;
+        }
+        @media (max-width: 600px) {
+          .responsive-card {
+            aspect-ratio: 2/3 !important;
+            min-height: unset !important;
+            max-height: unset !important;
+            width: 90% !important;
+          }
+        }
         @media (max-width: 600px) {
           .w-\[430px\] { width: 100% !important; }
-          .aspect-\[9\/16\] { aspect-ratio: 1/1 !important; }
           .px-8 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+          .min-h-\[765px\] { min-height: unset !important; }
+          .max-h-\[95vh\] { max-height: unset !important; }
         }
       `}</style>
     </div>
