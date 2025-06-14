@@ -268,7 +268,7 @@ export const translations = {
       responsibilities: "Responsabilités Clés",
       experiences: {
         vermr: {
-          title: "Co-fondateur et PDG",
+          title: "Co-fondateur et CEO",
           company: "VermR",
           location: "Paris, France",
           period: "Septembre 2024 - Présent",
