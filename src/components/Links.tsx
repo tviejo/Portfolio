@@ -27,6 +27,7 @@ function Links() {
   const t = translations[language].links;
   const [links, setLinks] = useState<Link[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showContactHint, setShowContactHint] = useState(false);
 
   useEffect(() => {
     const fetchLinks = async () => {
@@ -68,14 +69,44 @@ function Links() {
     fetchLinks();
   }, [t]);
 
-  const handleSaveContact = () => {
+  const handleSaveContact = async () => {
     const contactInfo = {
       name: 'Thomas Viejo',
       email: 'tviejo12@gmail.com',
       phone: '+33624433321',
-      website: 'https://www.thomas-viejo.fr'
+      website: 'https://www.thomas-viejo.fr',
+      photoUrl: '/images/thomas.jpg',
     };
-    const vcfContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${contactInfo.name}\nEMAIL:${contactInfo.email}\nTEL:${contactInfo.phone}\nURL:${contactInfo.website}\nEND:VCARD`;
+
+    // Fetch the image and convert to base64
+    let photoBase64 = '';
+    try {
+      const response = await fetch(contactInfo.photoUrl);
+      const blob = await response.blob();
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onloadend = () => {
+          const result = reader.result as string;
+          // Remove the data URL prefix
+          const base64 = result.split(',')[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+      });
+      reader.readAsDataURL(blob);
+      photoBase64 = await base64Promise;
+    } catch (e) {
+      // If image fails, just skip the photo
+      photoBase64 = '';
+    }
+
+    let vcfContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${contactInfo.name}\nEMAIL:${contactInfo.email}\nTEL:${contactInfo.phone}\nURL:${contactInfo.website}`;
+    vcfContent += `\nNOTE:Software Developer & Automation Specialist`;
+    if (photoBase64) {
+      vcfContent += `\nPHOTO;ENCODING=b;TYPE=JPEG:${photoBase64}`;
+    }
+    vcfContent += '\nEND:VCARD';
+
     const blob = new Blob([vcfContent], { type: 'text/vcard' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -84,6 +115,8 @@ function Links() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    setShowContactHint(true);
+    setTimeout(() => setShowContactHint(false), 7000);
   };
 
   // 3D tilt effect on drag only, clamped to ±30deg
@@ -195,6 +228,11 @@ function Links() {
                   )}
                 </Button>
               ))}
+              {showContactHint && (
+                <div className="mt-4 text-center text-sm text-primary-foreground bg-primary/80 rounded-lg px-4 py-2 shadow">
+                  <strong>Almost done!</strong> Tap the downloaded file at the bottom of your screen to add this contact to your phone.
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -204,21 +242,7 @@ function Links() {
           background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(0,0,0,0.18) 100%);
         }
         .responsive-card {
-          aspect-ratio: 2/3 !important;
-        }
-        @media (max-width: 600px) {
-          .responsive-card {
-            aspect-ratio: 2/3 !important;
-            min-height: unset !important;
-            max-height: unset !important;
-            width: 90% !important;
-          }
-        }
-        @media (max-width: 600px) {
-          .w-\[430px\] { width: 100% !important; }
-          .px-8 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
-          .min-h-\[765px\] { min-height: unset !important; }
-          .max-h-\[95vh\] { max-height: unset !important; }
+          aspect-ratio: 3/5 !important;
         }
       `}</style>
     </div>
