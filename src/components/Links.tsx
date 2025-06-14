@@ -174,7 +174,7 @@ function Links() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-secondary/5">
+    <div className="h-screen flex items-center justify-center overflow-auto bg-gradient-to-b from-background to-secondary/5">
       <motion.div
         ref={cardRef}
         className="responsive-card w-[430px] max-w-full bg-white/10 dark:bg-black/30 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl flex flex-col glassy-gradient relative select-none px-0 py-0 overflow-hidden"
@@ -242,7 +242,7 @@ function Links() {
           background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(0,0,0,0.18) 100%);
         }
         .responsive-card {
-          aspect-ratio: 6/11 wa !important;
+          aspect-ratio: 1/2 wa !important;
         }
       `}</style>
     </div>
