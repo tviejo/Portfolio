@@ -39,6 +39,20 @@ export const translations = {
             "Presenting at major startup events"
           ]
         },
+        gtt: {
+          title: "Software Development Engineer Intern",
+          company: "GTT",
+          location: "Saint-Rémy-lès-Chevreuse, France",
+          period: "February 2025 - August 2025",
+          description: "Contributed to software development projects for maritime LNG containment systems.",
+          highlights: [
+            "Developed a Python application for automatic nesting of panels for on-shore ammonia storage tanks (50–100 m diameter), featuring a PyQt GUI",
+            "Implemented advanced geometric algorithms with NumPy and designed an SQL-backed parts management system",
+            "Automated BOM and drawing generation via VBA for SolidWorks, plus Python scripts for FreeCAD and ezdxf",
+            "Created optimized placement routines for complex-geometry panels and membranes, with automatic export of deliverables for manufacturers and site teams",
+            "Collaborated with design and production engineers to formalize business rules and technical requirements"
+          ]
+        },
         astec: {
           title: "Automation Technician",
           company: "ASTEC",
@@ -117,18 +131,18 @@ export const translations = {
       entries: {
         "42": {
           school: "42 Paris",
-          degree: "Advanced Software Engineering Program",
+          degree: "Architect in Digital Technology",
           period: "May 2024 - Present",
-          description: "Currently at level 11.44 in the advanced curriculum. Completed major projects such as webserv, ft_transcendence, and Inception, involving complex system programming, and web development. Skills acquired include C/C++, Unix systems, Docker ..."
+          description: "Legal and strategic perspectives of digital technology, with a focus on startup creation."
         },
         "saclay": {
           school: "Université Paris-Saclay",
-          degree: "Certificate in the Master 2 LEAD (Law Entrepreneurship and Digital)",
+          degree: "Master 2 LEAD (Law, Entrepreneurship & Digital) Certificate",
           period: "September 2024 - December 2024",
           description: "Specialized in the legal, entrepreneurial, and digital aspects of technology-driven businesses. Key coursework included business law, intellectual property, digital transformation strategy, and startup management."
         },
         "ets": {
-          school: "École de Technologie Supérieure de Montreal",
+          school: "École de Technologie Supérieure de Montréal",
           degree: "Bachelor's in Automated Production (Incomplete)",
           period: "September 2021 - September 2023",
           description: "Focused on automated production systems, including electronic circuit design, and microcontroller programming. Developed practical skills in project management, quality control, industrial process automation, and technical leadership."
@@ -148,7 +162,7 @@ export const translations = {
           school: "Liceo Franco-Mexicano",
           degree: "Premiere S (Scientific Track)",
           period: "September 2017 - June 2018",
-          description: "Completed foundational coursework in science and mathematics in an international environment while living in Mexico City, Mexico. Gained multicultural experience and improved my spanish."
+          description: "Completed foundational coursework in science and mathematics in an international environment while living in Mexico City, Mexico. Gained multicultural experience and improved my Spanish."
         }
       } as EducationEntries
     },
@@ -232,6 +246,20 @@ export const translations = {
             "Présentation lors d'événements majeurs de startups"
           ]
         },
+        gtt: {
+          title: "Stagiaire Ingénieur Développement Logiciel",
+          company: "GTT",
+          location: "Saint-Rémy-lès-Chevreuse, France",
+          period: "Février 2025 - Août 2025",
+          description: "Contribution à des projets de développement logiciel pour les systèmes de confinement GNL maritime.",
+          highlights: [
+            "Développement d’un logiciel Python de calepinage automatique de panneaux pour réservoirs terrestres d’ammoniac (50–100 m de diamètre) avec interface PyQt",
+            "Mise en œuvre de calculs géométriques avancés avec NumPy et gestion des pièces via une base SQL",
+            "Automatisation de la nomenclature et des plans via VBA pour SolidWorks et scripts Python pour FreeCAD et ezdxf",
+            "Création d’algorithmes d’optimisation du placement de membranes et panneaux aux géométries complexes, avec export automatique des livrables",
+            "Participation à la formalisation des règles métier avec les ingénieurs conception et production"
+          ]
+        },
         astec: {
           title: "Technicien en Automatisation",
           company: "ASTEC",
@@ -310,13 +338,13 @@ export const translations = {
       entries: {
         "42": {
           school: "42 Paris",
-          degree: "Programme Avancé en Ingénierie Logicielle",
+          degree: "Architecte en Technologie du Numérique",
           period: "Mai 2024 - Présent",
-          description: "Actuellement au niveau 11.44 dans le cursus avancé. Réalisé des projets majeurs comme webserv, ft_transcendence, et Inception, impliquant de la programmation système complexe et du développement web. Compétences acquises : C/C++, systèmes Unix, Docker ..."
+          description: "Perspectives juridiques et stratégiques du numérique, avec un focus sur la création de startup."
         },
         "saclay": {
           school: "Université Paris-Saclay",
-          degree: "Certificat Master 2 LEAD (Droit, Entrepreneuriat et Digital)",
+          degree: "Certificat Master 2 LEAD (Droit, Entrepreneuriat & Digital)",
           period: "Septembre 2024 - Décembre 2024",
           description: "Spécialisation dans les aspects juridiques, entrepreneuriaux et numériques des entreprises technologiques. Cours principaux : droit des affaires, propriété intellectuelle, stratégie de transformation digitale et gestion de startups."
         },
@@ -330,7 +358,7 @@ export const translations = {
           school: "IUT Paul Sabatier",
           degree: "DUT en Génie Électrique et Informatique Industrielle",
           period: "Septembre 2019 - Juin 2021",
-          description: "Apprentissage des principes fondamentaux de l'ingénierie, incluant l'électronique numérique, les systèmes d'alimentation, les systèmes de contrôle industriel et la programmation de systèmes embarqués. Projets impliquant la conception et la construction de prototypes d'automatisation réels."
+          description: "Apprentissage des principes fondamentaux de l'ingénierie, incluant l'électronique numérique, les systèmes d'alimentation, les systèmes de contrôle industriel et la programmation de systèmes embarqués."
         },
         "lycee": {
           school: "Lycée Bourdelle",
@@ -386,6 +414,7 @@ export const translations = {
     }
   }
 } as const;
+
 
 type EducationEntry = {
   school: string;

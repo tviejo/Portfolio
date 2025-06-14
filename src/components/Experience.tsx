@@ -10,6 +10,7 @@ const Experience = () => {
   const t = translations[language].experience;
 
   const experiences = [
+    t.experiences.gtt,
     t.experiences.vermr,
     t.experiences.astec,
     t.experiences.formule,

@@ -1,94 +1,111 @@
 // src/data/cvData.tsx
+// CV details extracted from Thomas-Viejo-CV.pdf 
 export const cvData = `
 Name: Thomas Viejo
 Email: tviejo12@gmail.com
 Phone: +33624433321
-github: https://github.com/tviejo
+GitHub: https://github.com/tviejo
 LinkedIn: https://www.linkedin.com/in/thomas-viejo-9a213b195/
 Location: Paris, France
-
 Work Experience:
 
-- **Software Developer Intern (C#)** in Maribor, Slovenia
-    - Developed a Windows Forms application to measure the energy consumption of IoT satellite transmitters.
-    - Enabled accurate adaptation of energy sources in regions with scarce energy availability.
+- **Software Development Engineer Intern at GTT**
+    - February 2025 – August 2025
+    - Saint-Rémy-lès-Chevreuse, France
+    - Developed a Python application for automatic nesting of panels for onshore ammonia storage tanks (50–100 m diameter), featuring a PyQt graphical interface
+    - Implemented advanced geometric calculations with NumPy and a SQL-based parts management system
+    - Automated bill of materials and drawing generation via VBA for SolidWorks, and Python scripts for FreeCAD and ezdxf
+    - Enabled optimized placement of complex-geometry panels and membranes, with automatic export of deliverables for manufacturers and site teams
+    - Collaborated with design and production engineers to formalize business rules and technical requirements
+
+- **Co-founder & CEO at VermR**
+    - September 2024 – January 2025
+    - Paris, France
+    - Launched a technology startup: defined strategy and developed online art-sales solutions
 
 - **Automation Technician at ASTEC**
-    - Intern (May 2022 - August 2022)
-    - Part-Time Employee (September 2022 - January 2023)
+    - Intern (May 2022 – August 2022)
+    - Part-Time Employee (September 2022 – January 2023)
     - Saint-Bruno-de-Montarville, Quebec, Canada
-    - Oversaw the construction of machinery for concrete production.
-    - Created electrical schematics, assembly plans, wiring diagrams, and testing protocols.
-    - Supervised cabling and on-site assembly teams.
-    - Managed quality control, production schedules, deadlines, suppliers, subcontractors, procurement, and inventory.
-    - Conducted testing and validation of machinery before client delivery.
+    - Oversaw construction of machinery for concrete production
+    - Created electrical schematics, assembly plans, wiring diagrams, and testing protocols
+    - Supervised cabling and on-site assembly teams
+    - Managed quality control, production schedules, deadlines, suppliers, subcontractors, procurement, and inventory
+    - Conducted testing and validation of machinery before client delivery
 
-- **Camera Operator at Courtiseurs Productions** (Independent)
-    - June 2018 - August 2021
+- **Lead of External Relationships at Formule ETS Montréal**
+    - September 2021 – September 2023
+    - Montreal, Canada
+    - Negotiated partnerships with Tesla, Bombardier, and Red Bull
+    - Organized events, logistics, and provided technical support to teams
+
+- **Software Developer Intern at University of Maribor**
+    - April 2021 – July 2021
+    - Maribor, Slovenia
+    - Developed a C# application for IoT energy-consumption monitoring via CAN bus with a FTDI interface
+    - Developed a Python application for automatic nesting of panels for onshore ammonia storage tanks (50–100 m diameter), featuring a PyQt GUI, advanced geometric calculations with NumPy, and an SQL-based parts management system
+    - Automated bill of materials and drawing generation via VBA for SolidWorks and Python scripts for FreeCAD and ezdxf
+    - Participated in formalizing business rules with design and production engineers
+
+- **Camera Operator at Courtiseurs Productions (Freelance)**
+    - June 2018 – August 2021
     - Montauban, Occitanie, France
-    - Operated camera equipment for various productions.
+    - Operated camera equipment for various productions
 
-- **Art Salesman** (Part-Time)
-    - 2021 - present
-    - For the artist **Philippe Viejo** (father) I sell his paintings in fairs and online.
-
+- **Art Salesman (Part-Time) for Philippe Viejo**
+    - 2021 – Present
+    - Sold paintings at fairs and online
 
 Education:
 
-- **Premiere S**
+- **Premiere S (Scientific Track)**
     - Liceo Franco-Mexicano, Mexico City, Mexico
 
 - **Baccalauréat Scientifique (High School Diploma in Science)**
     - Lycée Bourdelle, Montauban, France
 
-- **DUT in Electrical Engineering and Industrial Computing**  
-  *IUT Paul Sabatier* (September 2019 - June 2021)
+- **DUT in Electrical Engineering and Industrial Computing**
+    - IUT Paul Sabatier (September 2019 – June 2021)
     - Languages: C, VHDL, Grafcet, Ladder
     - Skills: Electronic circuit fabrication, microcontroller programming, FPGA programming
 
-- **Bachelor's in Automated Production**  
-  *École de Technologie Supérieure de Montreal* (September 2021 - September 2023)
-    - Equilavent to an engineering degree in France
-    - not finished because I wanted to go to 42 Paris to improve my programming skills
+- **Bachelor's in Automated Production (Incomplete)**
+    - École de Technologie Supérieure de Montréal (September 2021 – September 2023)
+    - Equivalent to an engineering degree in France
     - Languages: C, VHDL, Grafcet, Ladder
     - Skills: Electronic circuit fabrication, microcontroller programming, FPGA programming
     - Additional: Production methods, project management, quality management
 
-- **Certification, Master 2 Law Entrepreneurship and Digital**  
-  *Université Paris-Saclay* (September 2024 - December 2024)
+- **Certification – Master 2 Law Entrepreneurship and Digital**
+    - Université Paris-Saclay (September 2024 – December 2024)
 
-- **42 Paris** (May 2024 - Present)  
-  *Association 42*  
-  96, Boulevard Bessières  
-  75017 Paris, FRANCE
+- **Architect in Digital Technology Program – 42 Paris**
+    - Association 42 (May 2024 – Present)
+    - 96, Boulevard Bessières, 75017 Paris, France
 
-
-**ACADEMIC RESULTS FOR THOMAS VIEJO**
+Academic Results for Thomas Viejo:
 
 I, the undersigned Sophie VIGER, Managing Director of 42 Paris, hereby certify that:
 
-Thomas Viejo, born on June 27, 2001, in Schoelcher, France, has obtained the grades detailed below as of December 04, 2024.
-
-- Selected in: February 2024
-- Curriculum started on: May 20, 2024
-- Current level: 11.44
+- Selected in: February 2024  
+- Curriculum started on: May 20, 2024  
+- Current level: 11.44  
 - Current status: In the 42 advanced part
 
-**Curriculum Details:**
+Curriculum Details:
 
-**The Common Core** (Completed 100%)
-- **Developed Skills:**
-    - **Algorithms & AI:** Standard algorithms on data structures (arrays, linked lists, trees), state machines, asynchronous management.
-    - **Graphics:** Image manipulation, drawing, user event handling, event loops.
-    - **Group & Interpersonal:** Collaboration, team management, interpersonal interactions.
-    - **Imperative Programming:** C programming basics, data structures, memory management.
-    - **Network & System Administration:** Networking fundamentals, Linux system administration.
-    - **Object-Oriented Programming:** C++ principles, classes, inheritance, templates.
-    - **Rigor:** Adherence to technical constraints, thorough testing.
-    - **System Programming:** Unix system calls, process management, inter-process communication.
-    - **Web:** Web architecture, HTTP protocol, web technologies (HTML, CSS, JavaScript), backend development, MVC model, UX/UI design.
+**The Common Core (Completed 100%)**
+- **Algorithms & AI:** Standard algorithms on data structures (arrays, linked lists, trees), state machines, asynchronous management.  
+- **Graphics:** Image manipulation, drawing, user event handling, event loops.  
+- **Group & Interpersonal:** Collaboration, team management, interpersonal interactions.  
+- **Imperative Programming:** C programming basics, data structures, memory management.  
+- **Network & System Administration:** Networking fundamentals, Linux system administration.  
+- **Object-Oriented Programming:** C++ principles, classes, inheritance, templates.  
+- **Rigor:** Adherence to technical constraints, thorough testing.  
+- **System Programming:** Unix system calls, process management, inter-process communication.  
+- **Web:** Web architecture, HTTP protocol, web technologies (HTML, CSS, JavaScript), backend development, MVC model, UX/UI design.
 
-**Appendix 1: Projects Completed During the Common Core**
+Appendix 1: Projects Completed During the Common Core:
 
 | Name             | Workload | Result            | Skills                                      | Date           |
 |------------------|----------|-------------------|---------------------------------------------|----------------|
@@ -104,60 +121,48 @@ Thomas Viejo, born on June 27, 2001, in Schoelcher, France, has obtained the gra
 | CPP Modules 00-09| Various  | Pass              | Rigor, Object-Oriented Programming          | Aug-Sep 2024   |
 | cub3d            | 280H     | Pass with bonus   | Rigor, Algorithms & AI, Graphics            | Sep 18, 2024   |
 | NetPractice      | 50H      | Pass              | Rigor, Network & System Administration      | Sep 17, 2024   |
-| Inception        | 210H     | Pass              | Rigor, Network & System Administration      | Nov 03, 2024   |
+| Inception        | 210H     | Pass with bonus   | Rigor, Network & System Administration      | Nov 03, 2024   |
 | webserv          | 175H     | Pass with bonus   | Rigor, Unix, Networking, OOP                | Nov 05, 2024   |
 | ft_transcendence | 245H     | Pass with bonus   | Rigor, Web, Group & Interpersonal           | Nov 05, 2024   |
 
-**The 42 Advanced Part**
+The 42 Advanced Part:
+- **camagru (49H)**
+  - Skills: Databases, Web Development, Security
 
-- **Projects in Progress:**
-    - **camagru** (49H)
-        - Skills: Databases, Web Development, Security
+Professional Roles:
 
-**Professional Roles:**
+- **Co-founder and CEO – VermR** (September 2024 – Present)  
+  Paris, Île-de-France, France  
+  Leading a startup focused on enhancing access to art through AI-powered curation.
 
-- **Co-founder and CEO at VermR** (September 2024 - Present)
-    - Paris, Île-de-France, France
-    - Leading an innovative venture in [industry/sector].
+- **Lead of External Relationships – Formule ETS Montréal** (September 2021 – September 2023)  
+  Montreal, Quebec, Canada  
+  Managed partnerships and external communications, achieving 4th place worldwide at Formula Student 2023 and securing sponsors like Tesla and Bombardier.
 
-- **Lead of External Relationships at Formule ETS Montréal** (September 2021 - September 2023)
-    - Montreal, Quebec, Canada
-    - Managed partnerships and external communications.
+- **Automation Technician – ASTEC** (May 2022 – January 2023)  
+  Quebec, Canada  
+  Oversaw construction, quality control, and testing of concrete production machinery.
 
-- **Automation Technician at ASTEC**
-    - Intern (May 2022 - August 2022)
-    - Part-Time Employee (September 2022 - January 2023)
-    - Saint-Bruno-de-Montarville, Quebec, Canada
+- **Software Development Intern – Univerza v Mariboru** (April 2021 – July 2021)  
+  Maribor, Slovenia  
+  Developed IoT energy monitoring applications with Windows Forms.
 
-- **Software Development Intern at Univerza v Mariboru** (April 2021 - July 2021)
-    - Maribor, Slovenia
-    - Developed software solutions during the internship.
+Additional Information:
 
-**Additional Information:**
+- **Languages:** French (Fluent), English (Fluent), Spanish (Intermediate).  
+- **Technical Skills:** C, C++, C#, Python, JavaScript, VHDL, Grafcet, Ladder, Git, FPGA, SQL, PyQt, NumPy, VBA, FreeCAD, ezdxf.  
+- **Certifications:** Master 2 Law Entrepreneurship and Digital (Université Paris-Saclay).
 
-- **Languages:** Fluent in French and English, Intermediate in Spanish.
-- **Technical Skills:** Proficient in C, VHDL, Grafcet, Ladder, C++, Python, JavaScript.
-- **Certifications:** Master 2 Law Entrepreneurship and Digital.
+Extracurricular Activities:
 
-**Extracurricular Activities:**
-- **Formule ETS Montréal** (September 2021 - September 2023)
-    - Lead of External Relationships
-    - Managed partnerships and external communications.
-    - Organized events and activities.
-    - Managed a team of 5 members.
-    - Developed marketing strategies and promotional materials.
-    - Coordinated with sponsors and partners.
-    - Represented the team at competitions and events.
-    - Participated in the design and construction of the vehicle.
-    - Conducted research and development activities.
-    - Managed the team's budget and finances.
-    - Oversaw the team's logistics and operations.
-    - 4th place in the world in 2024 out of 600 teams and first in North America.
-    - Organized event with Red Bull.
-    - Important partnerships with companies like Tesla, Bombardier, Ford, Red Bull, and others.
+- **Formule ETS Montréal** (September 2021 – September 2023)  
+  Lead of External Relationships; organized events with Red Bull and partners like Tesla, Bombardier, Ford; 4th place globally out of 600 teams in 2024.
 
-- **Hobbies:** Photography, Videography, Traveling.
-- **Interests:** Technology, Art, Innovation, Entrepreneurship, Sustainability, Social Impact, AI.
-- **Travel:** One year of travel with a motorhome from Argentina to Alaska.
+Travel:
 
+- One-year motorhome trip from Argentina to Alaska.
+
+Hobbies & Interests:
+
+- Photography, Videography, Traveling, Technology, Art, Innovation, Entrepreneurship, Sustainability, Social Impact, AI.
 `;
