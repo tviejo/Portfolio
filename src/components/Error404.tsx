@@ -1,4 +1,4 @@
-import { Mail, MapPin, Home, ArrowLeft } from 'lucide-react';
+import { Mail, MapPin, Home} from 'lucide-react';
 import { Button } from './ui/button';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
