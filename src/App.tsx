@@ -16,6 +16,7 @@ import Projects from './components/Projects';
 import Education from './components/Education';
 import Contact from './components/Contact';
 import DocumentHead from './components/DocumentHead';
+import MetaTags from './components/MetaTags';
 
 // Modern, streamlined homepage layout
 const HomePage = () => (
@@ -42,6 +43,7 @@ function App() {
     <ThemeProvider>
       <LanguageProvider>
         <DocumentHead />
+        <MetaTags />
         <AnimatePresence mode="wait">
           <motion.div
             initial="initial"
